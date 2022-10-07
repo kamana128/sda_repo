@@ -2,4 +2,7 @@ pandas==1.4.2
 seaborn==0.11.2
 numpy==1.22.0
 matplotlib==3.5.2
+<<<<<<< HEAD
 matplotlib-inline==0.1.3
+=======
+>>>>>>> 1108ab5567ba36f1c0c04df130437ee3764c5af6

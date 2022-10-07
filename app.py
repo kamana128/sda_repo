@@ -18,6 +18,101 @@ for i in range(1901,2021):
 
 df.columns = col_name
 
+def compareYearTempBox(*args,lat,Long):
+  plt.rcParams.update({
+    "figure.facecolor":  (1.0, 0.0, 0.0, 0.3),  # red   with alpha = 30%
+    "axes.facecolor":    (1.0, 1.0, 1.0, 0.5),  # green with alpha = 50%
+    "savefig.facecolor": (1.0, 1.0, 1.0, 0.2),  # blue  with alpha = 20%
+    })
+  ndf = df[df['Longitude'] == lat ]
+  res = ndf[ndf['latitude'] == Long]
+  labels = ['Jan', 'Feb', 'Mar', 'Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+  search_col0 = []
+  search_col1 = []
+  for i in res.columns:
+    if i[:4] == args[0]:
+      search_col0.append(i)
+  for i in res.columns:
+      if i[:4] == args[1]:
+        search_col1.append(i)
+
+  per = []
+  for i in range(len(search_col1)):
+    per.append((res[search_col0].T.values[i]-res[search_col1].T.values[i])/res[search_col0].T.values[i])
+
+#   data = [res[search_col0].T.values, res[search_col1].T.values]
+ 
+#   fig = plt.figure(figsize =(10, 7))
+ 
+# # Creating axes instance
+#   ax = fig.add_axes([0, 0, 1, 1])
+ 
+# # Creating plot
+#   bp = ax.boxplot(data)
+      
+  fig, (ax1, ax2) = plt.subplots(1,2, sharey=True)
+  ax1.boxplot(res[search_col0].T.values)
+  ax2.boxplot(res[search_col1].T.values)
+  ax1.set_xticklabels([str(args[0])])
+  ax2.set_xticklabels([str(args[1])])
+  #ax1.plot(res[search_col0].T.values, marker='o', markerfacecolor='blue', markersize=12, color='skyblue', linewidth=4,label = str(args[0]))
+  #ax1.plot(res[search_col1].T.values, marker='h', markerfacecolor='green', markersize=12, color='lightgreen', linewidth=4,label = str(args[1]))
+  #ax1.plot(per, color='red', linewidth=2,label = "Percentage Change")
+
+
+  #plt.legend([args[0],args[1],"Percentage Change"])
+  #plt.xticks([0,1,2,3,4,5,6,7,8,9,10,11],labels, rotation ='vertical')
+  #plt.grid("ON")
+  #plt.ylabel('Temp in °C')
+  st.pyplot(fig)
+        
+
+
+
+
+
+def compareYearTemp(*args,lat,Long):
+  plt.rcParams.update({
+    "figure.facecolor":  (1.0, 0.0, 0.0, 0.3),  # red   with alpha = 30%
+    "axes.facecolor":    (0.0, 0.0, 0.0, 0.5),  # green with alpha = 50%
+    "savefig.facecolor": (0.0, 0.0, 0.6, 0.2),  # blue  with alpha = 20%
+    })
+  ndf = df[df['Longitude'] == lat ]
+  res = ndf[ndf['latitude'] == Long]
+  labels = ['Jan', 'Feb', 'Mar', 'Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+  search_col0 = []
+  search_col1 = []
+  for i in res.columns:
+    if i[:4] == args[0]:
+      search_col0.append(i)
+  for i in res.columns:
+      if i[:4] == args[1]:
+        search_col1.append(i)
+
+  per = []
+  for i in range(len(search_col1)):
+    per.append((res[search_col0].T.values[i]-res[search_col1].T.values[i])/res[search_col0].T.values[i])
+
+
+      
+  fig, ax1 = plt.subplots()
+  ax1.plot(res[search_col0].T.values, marker='o', markerfacecolor='blue', markersize=12, color='skyblue', linewidth=4,label = str(args[0]))
+  ax1.plot(res[search_col1].T.values, marker='h', markerfacecolor='green', markersize=12, color='lightgreen', linewidth=4,label = str(args[1]))
+  ax1.plot(per, color='red', linewidth=2,label = "Percentage Change")
+
+
+  plt.legend([args[0],args[1],"Percentage Change"])
+  plt.xticks([0,1,2,3,4,5,6,7,8,9,10,11],labels, rotation ='vertical')
+  plt.grid("ON")
+  plt.ylabel('Temp in °C')
+  leg = plt.legend(loc='best')
+  for text in leg.get_texts():
+    text.set_color("w")
+  st.pyplot(fig)
+  
+
+
+
 
 
 
@@ -91,9 +186,11 @@ def get_stat(*args):
     leg = plt.legend(loc='best')
     for text in leg.get_texts():
         text.set_color("w")
-    plt.show()
-    st.pyplot(fig)
+    #plt.show()
 
+    #plt.boxplot(res.iloc[2:-2,1][-12:])
+    st.pyplot(fig)
+    #st.area_chart(res.iloc[2:-2,1][-12:],x =labels )
 
 
 
@@ -113,11 +210,16 @@ if st.sidebar.button('Click'):
         st.subheader(f'{ans[0]} , {ans[1]}')
     get_stat(Lat,Long)
 
+BASE = st.sidebar.text_input('Base Year','0000')
+COMP_YEAR = st.sidebar.text_input('Year to compare','0000')
+if st.sidebar.button('Compare'):
+    compareYearTemp(BASE,COMP_YEAR,lat = Lat,Long =Long)
+if st.sidebar.button('Box Plot'):
+    compareYearTempBox(BASE,COMP_YEAR,lat = Lat,Long =Long)
 
-
-else:
-    st.write('Goodbye')
-
+# arr= np.array([Lat,Long])
+# arrdf = pd.DataFrame(arr, columns = ['latitude','longitude'])
+# st.map(arrdf)
 
 # #######
 

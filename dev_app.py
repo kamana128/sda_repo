@@ -15,16 +15,19 @@ for i in range(1901,2021):
     col_name.append(str(i)+'_'+month[ii])
 
 df.columns = col_name
-df['Min'] = df.iloc[:,2:].min(axis = 1)
-df['Max'] = df.iloc[:,2:].max(axis = 1)
-df['Mean'] = df.iloc[:,2:].mean(axis = 1)
-df['Q1'] = df.iloc[:,2:].quantile(0.25,axis = 1)
-df['Q2'] = df.iloc[:,2:].quantile(0.50,axis = 1)
-df['Q3'] = df.iloc[:,2:].quantile(0.75,axis = 1)
-df['Q4'] = df.iloc[:,2:].quantile(1,axis = 1)
-df['IQR'] = df['Q3'] - df['Q1']
-df['Skewness'] = df.iloc[:,2:].skew(axis = 1)
-df['Kurtosis'] = df.iloc[:,2:].kurtosis(axis = 1)
+ndf = pd.DataFrame()
+ndf['lat'] = df['lat']
+ndf['lon'] = df['lon']
+ndf['Min'] = df.iloc[:,2:].min(axis = 1)
+ndf['Max'] = df.iloc[:,2:].max(axis = 1)
+ndf['Mean'] = df.iloc[:,2:].mean(axis = 1)
+ndf['Q1'] = df.iloc[:,2:].quantile(0.25,axis = 1)
+ndf['Q2'] = df.iloc[:,2:].quantile(0.50,axis = 1)
+ndf['Q3'] = df.iloc[:,2:].quantile(0.75,axis = 1)
+ndf['Q4'] = df.iloc[:,2:].quantile(1,axis = 1)
+ndf['IQR'] = ndf['Q3'] - ndf['Q1']
+ndf['Skewness'] = df.iloc[:,2:].skew(axis = 1)
+ndf['Kurtosis'] = df.iloc[:,2:].kurtosis(axis = 1)
 #ndf = df[['lat','lon']]
 
 def stprint(period):
@@ -42,8 +45,30 @@ period = st.sidebar.slider('Select a time Period', 1901, 2020)
 #st.sidebar.write(f'The Time Period is {period}')
 endperiod = st.sidebar.slider('Select a Ending Period', period, 2020)
 st.sidebar.write(f'The Time Period is {period}  to {endperiod}')
+#st.write("Debug", type(endperiod))
+
+cols = ['lat','lon']
+for i in df.columns[2:]:
+  if  int(i[:4]) in range(period,endperiod+1):#yr1 >= i[:4] and i[:4] <=yr2:
+    cols.append(i)
+
+sdf = df[cols]
 
 
+df.columns = col_name
+ndf = pd.DataFrame()
+ndf['lat'] = df['lat']
+ndf['lon'] = df['lon']
+ndf['Min'] = sdf.iloc[:,2:].min(axis = 1)
+ndf['Max'] = sdf.iloc[:,2:].max(axis = 1)
+ndf['Mean'] = sdf.iloc[:,2:].mean(axis = 1)
+ndf['Q1'] = sdf.iloc[:,2:].quantile(0.25,axis = 1)
+ndf['Q2'] = sdf.iloc[:,2:].quantile(0.50,axis = 1)
+ndf['Q3'] = sdf.iloc[:,2:].quantile(0.75,axis = 1)
+ndf['Q4'] = sdf.iloc[:,2:].quantile(1,axis = 1)
+ndf['IQR'] = ndf['Q3'] - ndf['Q1']
+ndf['Skewness'] = sdf.iloc[:,2:].skew(axis = 1)
+ndf['Kurtosis'] = sdf.iloc[:,2:].kurtosis(axis = 1)
 # col1, col2, col3 , col4 , col5 , col6 = st.columns(6)
 
 # with col1:
@@ -89,7 +114,7 @@ st.write('You selected:', st_option)
 
 if st_option == 'Min':
         
-    fig = px.density_mapbox(df, lat='lat', lon='lon', z='Min', radius=15,
+    fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Min', radius=15,
                             center=dict(lat=31.25, lon=77.25), zoom=4,
                             mapbox_style="carto-positron" )
 
@@ -98,14 +123,14 @@ if st_option == 'Min':
 
 if st_option == 'Max':
         
-    fig = px.density_mapbox(df, lat='lat', lon='lon', z='Max', radius=15,
+    fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Max', radius=15,
                             center=dict(lat=31.25, lon=77.25), zoom=4,
                             mapbox_style="carto-positron" )
 
     st.plotly_chart(fig, use_container_width=True)
 if st_option == 'Mean':
         
-    fig = px.density_mapbox(df, lat='lat', lon='lon', z='Mean', radius=15,
+    fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Mean', radius=15,
                             center=dict(lat=31.25, lon=77.25), zoom=4,
                             mapbox_style="carto-positron" )
 
@@ -113,7 +138,7 @@ if st_option == 'Mean':
 
 if st_option == 'Quartiles':
         
-    fig = px.density_mapbox(df, lat='lat', lon='lon', z='Q3', radius=15,
+    fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Q3', radius=15,
                             center=dict(lat=31.25, lon=77.25), zoom=4,
                             mapbox_style="carto-positron" )
 
@@ -122,7 +147,7 @@ if st_option == 'Quartiles':
 
 if st_option == 'IQR':
         
-    fig = px.density_mapbox(df, lat='lat', lon='lon', z='IQR', radius=15,
+    fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='IQR', radius=15,
                             center=dict(lat=31.25, lon=77.25), zoom=4,
                             mapbox_style="carto-positron" )
 
@@ -132,7 +157,7 @@ if st_option == 'IQR':
 
 if st_option == 'Skewness':
         
-    fig = px.density_mapbox(df, lat='lat', lon='lon', z='Skewness', radius=15,
+    fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Skewness', radius=15,
                             center=dict(lat=31.25, lon=77.25), zoom=4,
                             mapbox_style="carto-positron" )
 
@@ -141,7 +166,7 @@ if st_option == 'Skewness':
 
 if st_option == 'Kurtosis':
         
-    fig = px.density_mapbox(df, lat='lat', lon='lon', z='Kurtosis', radius=15,
+    fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Kurtosis', radius=15,
                             center=dict(lat=31.25, lon=77.25), zoom=4,
                             mapbox_style="carto-positron" )
 

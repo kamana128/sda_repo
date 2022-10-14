@@ -7,7 +7,7 @@ import streamlit as st
 import plotly.express as px
 import os
 
-from zmq import RADIO
+#from zmq import RADIO
 
 ZOOM = 3
 OPE = 0.75

@@ -67,7 +67,7 @@ st.title("This Page is  Under-Development - Only select CRU50KM")
 
 option = st.sidebar.selectbox(
     'Select a Data-set: ',
-    ('','CRU 50KM', 'CRU 25KM', 'IMDAA 12KM','CHIRP 5KM'))
+    ('CRU 50KM', 'CRU 25KM', 'IMDAA 12KM','CHIRP 5KM'))
 
 st.sidebar.write('You selected:', option)
 

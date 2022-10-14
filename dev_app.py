@@ -72,7 +72,7 @@ option = st.sidebar.selectbox(
 st.sidebar.write('You selected:', option)
 
 if option == 'CRU 50KM':
-    base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020"
+    base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020/"
     files = os.listdir(base_path)
     select_data = []
     for i in files:
@@ -84,7 +84,7 @@ if option == 'CRU 50KM':
 
     file_name =  st_option
     #st.write('Full path is ',base_path + file_name)
-    df = preprocessor(os.path.join(base_path,file_name))
+    df = preprocessor(base_path+file_name)
     ndf = action(df)
 
     
@@ -102,7 +102,7 @@ if option == 'CRU 25KM':
 
     file_name =  st_option
     #st.write('Full path is ',base_path + file_name)
-    df = preprocessor(os.path.join(base_path,file_name))
+    df = preprocessor(base_path+file_name)
     ndf = action(df)
 
 if option == 'IMDAA 12KM':

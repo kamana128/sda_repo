@@ -320,7 +320,7 @@ with col1:
 
 with col2:
    sel_lat = st.slider(
-    'Select Latitude and Longitude',
+    'Select the Grid Refer to the tabel below for grid number',
     0, len(df.T.columns), (50, 80),step = 1)
     
 st.write('Values:', sel_lat)

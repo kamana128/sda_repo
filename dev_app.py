@@ -2,25 +2,39 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import pandas as pd
-import json
 import streamlit as st
 import plotly.express as px
 import os
+import base64
+# from PIL import Image
+# image = Image.open('Header.png')
 
-#from zmq import RADIO
+# st.image(image)
 
-ZOOM = 3
-OPE = 0.75
-RADIUS = 18
+
+
+file_ = open("Header.gif", "rb")
+contents = file_.read()
+data_url = base64.b64encode(contents).decode("utf-8")
+file_.close()
+
+st.markdown(
+    f'<img src="data:image/gif;base64,{data_url}" alt="cat gif">',
+    unsafe_allow_html=True,
+)
+ZOOM = 4.85
+OPE = 0.95
+RADIUS = 20
 def preprocessor(file):
-    col_name = ['lon','lat']
+    col_name = ['remove','lon','lat']
     mon = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
-    for i in range(1901,2022):
+    for i in range(1901,2021):
         for ii in range(12):
             col_name.append(str(i)+"_"+mon[ii])
     read_path = file
     try:
         df = pd.read_csv(read_path)
+        #st.write(len(df.columns))
     except:
         df = pd.read_excel(read_path)
 
@@ -29,7 +43,7 @@ def preprocessor(file):
     except:
         print("Already have columns Name")
         df.rename(columns = {'Long':'lon','Lat':'lat'}, inplace = True)
-        df.columns = col_name[:-2]
+        df.columns = col_name 
 
     return df
 
@@ -43,10 +57,18 @@ def preprocessor(file):
 #     col_name.append(str(i)+'_'+month[ii])
 
 # df.columns = col_name
-def action(df):
+def action(df,yr1,yr2):
+    col_name = []
+    mon = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
+    for i in range(yr1,yr2):
+        for ii in range(12):
+            col_name.append(str(i)+"_"+mon[ii])
+    
     ndf = pd.DataFrame()
+    
     ndf['lat'] = df['lat']
     ndf['lon'] = df['lon']
+    df = df[col_name]
     ndf['Min'] = df.iloc[:,2:].min(axis = 1)
     ndf['Max'] = df.iloc[:,2:].max(axis = 1)
     ndf['Mean'] = df.iloc[:,2:].mean(axis = 1)
@@ -59,20 +81,34 @@ def action(df):
     ndf['Kurtosis'] = df.iloc[:,2:].kurtosis(axis = 1)
     return ndf
 #ndf = df[['lat','lon']]
+def corr_action(dfr,dft,yr1,yr2):
+    pass
+    
 
-def stprint(period):
-    st.write(f"I am here {period}")
+def action_normal(df,*args):
+    start_grid = args[0][0]
+    #st.write(start_grid)
+    #end_grid = args[1]
+    test_df = df.T
+    normal_df  = test_df[test_df == start_grid]
+    #lat_lon = test_df.iloc[:2]
+    normal_df = test_df.iloc[3:,:]
+    return normal_df#,lat_lon
 
-st.title("This Page is  Under-Development - Only select CRU50KM")
+period = st.sidebar.slider('Select a time Period', 1901, 2020)
+#st.sidebar.write(f'The Time Period is {period}')
+endperiod = st.sidebar.slider('Select a Ending Period', period+1, 2020)
+
+#st.title("_--_ Under-Development _--_")
 
 option = st.sidebar.selectbox(
     'Select a Data-set: ',
-    ('CRU 50KM', 'CRU 25KM', 'IMDAA 12KM','CHIRP 5KM'))
+    ('CRU 25KM Final Temp','CRU 25KM Final Rain','CRU 50KM', 'CRU 25KM', 'IMDAA 12KM','CHIRP 5KM'))
 
 st.sidebar.write('You selected:', option)
 
 if option == 'CRU 50KM':
-    base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020/"
+    base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020"
     files = os.listdir(base_path)
     select_data = []
     for i in files:
@@ -84,10 +120,44 @@ if option == 'CRU 50KM':
 
     file_name =  st_option
     #st.write('Full path is ',base_path + file_name)
-    df = preprocessor(base_path+file_name)
-    ndf = action(df)
+    df = preprocessor(os.path.join(base_path,file_name))
+    ndf = action(df,period,endperiod)
 
+
+if option == 'CRU 25KM Final Temp':
+    # base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020"
+    # files = os.listdir(base_path)
+    # select_data = []
+    # for i in files:
+    #     if '.csv' in i:
+    #         select_data.append(i)
+    # st_option = st.selectbox(
+    # 'Select Dataset from 50KM',
+    # np.array(select_data))
+
+    file_name =  "NWH-CRU_25km_temp-1901-2020-monthly.csv"
+    #st.write('Full path is ',base_path + file_name)
+    df = preprocessor(file_name)
     
+    ndf = action(df,period,endperiod)
+    
+if option == 'CRU 25KM Final Rain':
+    # base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020"
+    # files = os.listdir(base_path)
+    # select_data = []
+    # for i in files:
+    #     if '.csv' in i:
+    #         select_data.append(i)
+    # st_option = st.selectbox(
+    # 'Select Dataset from 50KM',
+    # np.array(select_data))
+
+    file_name =  "NWH-CRU_25km_precipitation_1901-2020-monthly.csv"
+    #st.write('Full path is ',base_path + file_name)
+    df = preprocessor(file_name)
+    
+    ndf = action(df,period,endperiod)
+
 
 if option == 'CRU 25KM':
     base_path = "./CRU_25km_Regrid-20221013T040132Z-001/CRU_25km_Regrid"
@@ -102,7 +172,7 @@ if option == 'CRU 25KM':
 
     file_name =  st_option
     #st.write('Full path is ',base_path + file_name)
-    df = preprocessor(base_path+file_name)
+    df = preprocessor(os.path.join(base_path,file_name))
     ndf = action(df)
 
 if option == 'IMDAA 12KM':
@@ -110,70 +180,8 @@ if option == 'IMDAA 12KM':
 if option == 'CHIRP 5KM':
     pass
 
-period = st.sidebar.slider('Select a time Period', 1901, 2020)
-#st.sidebar.write(f'The Time Period is {period}')
-endperiod = st.sidebar.slider('Select a Ending Period', period+1, 2020)
+
 st.sidebar.write(f'The Time Period is {period}  to {endperiod}')
-#st.write("Debug", type(endperiod))
-
-# cols = ['lat','lon']
-# for i in df.columns[2:]:
-#   if  int(i[:4]) in range(period,endperiod+1):#yr1 >= i[:4] and i[:4] <=yr2:
-#     cols.append(i)
-
-# sdf = df[cols]
-
-
-# df.columns = col_name
-# ndf = pd.DataFrame()
-# ndf['lat'] = df['lat']
-# ndf['lon'] = df['lon']
-# ndf['Min'] = sdf.iloc[:,2:].min(axis = 1)
-# ndf['Max'] = sdf.iloc[:,2:].max(axis = 1)
-# ndf['Mean'] = sdf.iloc[:,2:].mean(axis = 1)
-# ndf['Q1'] = sdf.iloc[:,2:].quantile(0.25,axis = 1)
-# ndf['Q2'] = sdf.iloc[:,2:].quantile(0.50,axis = 1)
-# ndf['Q3'] = sdf.iloc[:,2:].quantile(0.75,axis = 1)
-# ndf['Q4'] = sdf.iloc[:,2:].quantile(1,axis = 1)
-# ndf['IQR'] = ndf['Q3'] - ndf['Q1']
-# ndf['Skewness'] = sdf.iloc[:,2:].skew(axis = 1)
-# ndf['Kurtosis'] = sdf.iloc[:,2:].kurtosis(axis = 1)
-# col1, col2, col3 , col4 , col5 , col6 = st.columns(6)
-
-# with col1:
-#    st.button('Min',on_click= stprint(endperiod))
-
-# with col2:
-#    st.button('Max')
-# with col3:
-#    st.button('Mean')
-# with col4:
-#    st.button('Quartiles')
-# with col5:
-#    st.button('IQR')
-# with col6:
-#    st.button('Rel-Incr')
-
-
-
-
-# col7, col8, col9 , col10 , col11 , col12 = st.columns(6)
-
-# with col7:
-#    st.button('Percentiles')
-
-# with col8:
-#    st.button('Skewness')
-# with col9:
-#    st.button('Kurtosis')
-# with col10:
-#    st.button('Stationarity')
-# with col11:
-#    st.button('correlations')
-# with col12:
-#    st.button('outliers')
-
-
 st_option = st.selectbox(
     'Select a statistic to be displayed as Spatial Plot',
     ('','Min', 'Max', 'Mean','Quartiles','IQR','Relative Increment','Percentiles','Skewness','Kurtosis','Stationarity','correlations','outliers'))
@@ -181,45 +189,57 @@ st_option = st.selectbox(
 st.write('You selected:', st_option)
 
 if st_option:
+    if st_option == 'correlations':
+        file_name =  "NWH-CRU_25km_precipitation_1901-2020-monthly.csv"
+    #st.write('Full path is ',base_path + file_name)
+        raindf = preprocessor(file_name)
+        file_name =  "NWH-CRU_25km_temp-1901-2020-monthly.csv"
+    #st.write('Full path is ',base_path + file_name)
+        tempdf = preprocessor(file_name)
+    
+        st.write("Sorry !!! Under Development ")
+
+
     if st_option == 'Min':
+        #st.dataframe(ndf)
             
-        # fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Min', radius=RADIUS,
-        #                         center=dict(lat=31.25, lon=77.25), zoom=ZOOM,
-        #                         mapbox_style="carto-positron",title = f"Stat: {st_option} Between Year {period} - {endperiod}"
-        #                         ,opacity=OPE )
-        fig = px.density_mapbox(ndf, lat="lat", lon="lon",  hover_data=["Min"],
-                         zoom=3,width = 500, height=400)
-        fig.update_layout(
-        mapbox_style="white-bg",
-        mapbox_layers=[
-            {
-                "below": 'traces',
-                "sourcetype": "raster",
-                "sourceattribution": "United States Geological Survey",
-                "source": [
-                    "https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/79.2616,32.7587,4.45,0/500x400?access_token=pk.eyJ1IjoicmFqYW4zMnMiLCJhIjoiY2w5ODd5enV5MDBtajNzbzZ1a3ZjMnVxcSJ9.c2CycsFb8nHLlMwFE2-7iA"
-                ]
-            }
-        ])
-       # fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-        # fig.layout.xaxis.fixedrange = False
-        # fig.layout.yaxis.fixedrange = False
-        st.plotly_chart(fig)#, use_container_width=True)
+        fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Min', radius=RADIUS,
+                                center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
+                                mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period} - {endperiod}"
+                                ,opacity=OPE ,width = 600, height=600)
+        #fig = px.density_mapbox(ndf, lat="lat", lon="lon",  hover_data=["Min"],
+        #                 width = 300, height=200)
+        # fig.update_layout(
+        # mapbox_style="white-bg",
+        # mapbox_layers=[
+        #     {
+        #         "below": 'traces',
+        #         "sourcetype": "raster",
+        #         "sourceattribution": "United States Geological Survey",
+        #         "source": [
+        #             "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/79.3105,33.5608,3.92,0/300x200?access_token=pk.eyJ1IjoicmFqYW4zMnMiLCJhIjoiY2w5ODd5enV5MDBtajNzbzZ1a3ZjMnVxcSJ9.c2CycsFb8nHLlMwFE2-7iA"
+        #         ]
+        #     }
+        # ])
+        #fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+        #fig.layout.xaxis.fixedrange = False
+        #fig.layout.yaxis.fixedrange = False
+        st.plotly_chart(fig, use_container_width=False)
 
 
     if st_option == 'Max':
             
         fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Max', radius=RADIUS,
-                                center=dict(lat=31.25, lon=77.25), zoom=ZOOM,
-                                mapbox_style="carto-positron",title = f"Stat: {st_option} Between Year {period} - {endperiod}" 
-                                ,opacity=OPE)
+                                center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
+                                mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period} - {endperiod}" 
+                                ,opacity=OPE,width = 600, height=600)
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=False)
     if st_option == 'Mean':
             
         fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Mean', radius=RADIUS,
-                                center=dict(lat=31.25, lon=77.25), zoom=ZOOM,
-                                mapbox_style="carto-positron",title = f"Stat: {st_option} Between Year {period} - {endperiod}" 
+                                center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
+                                mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period} - {endperiod}" 
                                 ,opacity=OPE)
 
         st.plotly_chart(fig, use_container_width=True)
@@ -230,43 +250,43 @@ if st_option:
         ('Q1', 'Q2', 'Q3','Q4'))
             
         fig = px.density_mapbox(ndf, lat='lat', lon='lon', z=genre, radius=RADIUS,
-                                center=dict(lat=31.25, lon=77.25), zoom=ZOOM,
-                                mapbox_style="carto-positron",title = f"Stat: {st_option} Between Year {period} - {endperiod}" ,
-                                opacity=OPE)
+                                center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
+                                mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period} - {endperiod}" ,
+                                opacity=OPE,width = 600, height=600)
         
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=False)
 
 
     if st_option == 'IQR':
             
         fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='IQR', radius=RADIUS,
-                                center=dict(lat=31.25, lon=77.25), zoom=ZOOM,
-                                mapbox_style="carto-positron",title = f"Stat: {st_option} Between Year {period} - {endperiod}" 
-                                ,opacity=OPE)
+                                center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
+                                mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period} - {endperiod}" 
+                                ,opacity=OPE,width = 600, height=600)
 
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=False)
 
 
 
     if st_option == 'Skewness':
             
         fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Skewness', radius=RADIUS,
-                                center=dict(lat=33.25, lon=76.25), zoom=ZOOM,
+                                center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period} - {endperiod}"
-                                ,opacity=OPE )
+                                ,opacity=OPE,width = 600, height=600 )
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=False)
     #stamen-toner
 
     if st_option == 'Kurtosis':
             
         fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Kurtosis', radius=RADIUS,
-                                center=dict(lat=31.25, lon=77.25), zoom=ZOOM,
-                                mapbox_style="carto-positron",title = f"Stat: {st_option} Between Year {period} - {endperiod}" 
-                                ,opacity=OPE)
+                                center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
+                                mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period} - {endperiod}" 
+                                ,opacity=OPE,width = 600, height=600)
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=False)
 
 
     if st_option == 'Relative Increment':
@@ -281,50 +301,82 @@ if st_option:
             nndf = pd.DataFrame()
             nndf['lat'] = df['lat']
             nndf['lon'] = df['lon']
-            nndf['Incr'] = (df[compareY] - df[baseY])/df[baseY] * 100
+            nndf['Incr'] = (df[compareY] - df[baseY])/df[baseY] 
             fig = px.density_mapbox(nndf, lat='lat', lon='lon', z='Incr', radius=RADIUS,
-                                    center=dict(lat=31.25, lon=77.25), zoom=ZOOM,
-                                    mapbox_style="carto-positron",title = f"Stat: {st_option} Between Year {period} - {endperiod}",
-                                    opacity=OPE )
+                                    center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
+                                    mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period} - {endperiod}",
+                                    opacity=OPE ,width = 600, height=600)
 
+            st.plotly_chart(fig, use_container_width=False)
+
+
+
+col1, col2 = st.columns(2)
+
+with col1:
+   option_plot = st.selectbox(
+    'Select the Plot Type:',
+    ('','Line', 'Histogram', 'BoxPlot','Marginal','Violin','ECDF'))
+
+with col2:
+   sel_lat = st.slider(
+    'Select Latitude and Longitude',
+    0, len(df.T.columns), (50, 80),step = 1)
+    
+st.write('Values:', sel_lat)
+
+
+
+
+if option_plot and sel_lat:
+    xdf = action_normal(df,sel_lat)
+    #st.write(f"The Gird is: {lat_lon}")
+    if option_plot == 'Line':
+        fig = px.line(xdf, y=sel_lat[0])
+        st.plotly_chart(fig, use_container_width=True)
+        
+        #st.line_chart(df[['1901_jan','1902_jan']])
+
+
+
+#if option_plot:
+    if option_plot == 'Histogram':
+        
+        fig = px.histogram(xdf[sel_lat[0]])
+        # Plot!
+        st.plotly_chart(fig, use_container_width=True)
+
+
+
+    if option_plot == 'BoxPlot':
+            #single_grid = df.query('lat == 72.25 and lon == 32.25') 
+
+            fig = px.box(xdf[sel_lat[0]])
+            # Plot!
+            st.plotly_chart(fig, use_container_width=True)
+
+    if option_plot == 'Violin':
+            
+            fig = px.violin(xdf[sel_lat[0]],box=True)
+            # Plot!
             st.plotly_chart(fig, use_container_width=True)
 
 
 
-
-
-
-
-
-
-#    x = ndf['lat']
- #   y = ndf['lon']
-
-
-    #heatmap, xedges, yedges = np.histogram2d(x, y, bins=50)
-    #extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
-
-  #  fig, ax = plt.subplots()
-   # ax.scatter(x,y,c = df['2000_Jan'],cmap='viridis')
-    #fig = ax.colorbar()
-    #plt.clf()
-    #ax.imshow(heatmap.T, extent=extent, origin='lower')
-    #plt.show()
-
-
-    #ax.hist(arr, bins=20)
-
-    #st.pyplot(fig)
-
-
-# df = pd.DataFrame(
-#     np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
-#     columns=['lat', 'lon'])
-
-#st.map(ndf)
-
-
-# Lat range is 26.20 to 35.40
-# Long ranfge is 74.50 to 95.40
-
-#df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/earthquakes-23k.csv')
+    if option_plot == 'Marginal':
+            fig = px.density_heatmap(xdf, x=sel_lat[0], y=sel_lat[1], marginal_x="box", marginal_y="violin")
+            #fig = px.violin(df[['1901_jan','1901_dec']],box=True)
+            # Plot!
+            st.plotly_chart(fig, use_container_width=True)
+    if option_plot == 'ECDF':
+            fig = px.ecdf(xdf, x=sel_lat[0])
+            #fig = px.violin(df[['1901_jan','1901_dec']],box=True)
+            # Plot!
+            st.plotly_chart(fig, use_container_width=True)
+    # if option_plot == 'Scatter':
+    #         fig = px.scatter(df, x="lat", y= "lon",hover_data=['1901_jan'])
+    #         #fig = px.violin(df[['1901_jan','1901_dec']],box=True)
+    #         # Plot!
+    #         st.plotly_chart(fig, use_container_width=True)
+elif option_plot == '':
+    st.dataframe(df.T)

@@ -103,7 +103,7 @@ endperiod = st.sidebar.slider('Select a Ending Period', period+1, 2020)
 
 option = st.sidebar.selectbox(
     'Select a Data-set: ',
-    ('CRU 25KM Final Temp','CRU 25KM Final Rain','CRU 50KM', 'CRU 25KM', 'IMDAA 12KM','CHIRP 5KM'))
+    ('CRU 25KM Final Temp','CRU 25KM Final Rain'))#,'CRU 50KM', 'CRU 25KM', 'IMDAA 12KM','CHIRP 5KM'))
 
 st.sidebar.write('You selected:', option)
 

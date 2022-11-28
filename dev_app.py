@@ -11,7 +11,7 @@ import base64
 
 # st.image(image)
 
-
+st.set_page_config(page_title="SDA", page_icon=None, layout="centered", initial_sidebar_state="auto", menu_items=None)
 
 file_ = open("Header.gif", "rb")
 contents = file_.read()

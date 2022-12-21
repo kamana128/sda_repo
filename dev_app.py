@@ -11,8 +11,8 @@ import base64
 
 # st.image(image)
 
-st.set_page_config(page_title="SDA", page_icon=None, layout="centered", initial_sidebar_state="auto", menu_items=None)
 
+st.set_page_config(page_title="SDA", page_icon=None, layout="centered", initial_sidebar_state="auto", menu_items=None)
 file_ = open("Header.gif", "rb")
 contents = file_.read()
 data_url = base64.b64encode(contents).decode("utf-8")
@@ -23,8 +23,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 ZOOM = 4.85
-OPE = 0.95
-RADIUS = 10
+OPE = 0.99
+RADIUS = 17
 def preprocessor(file):
     col_name = ['remove','lon','lat']
     mon = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
@@ -188,83 +188,130 @@ if option == 'CRU 25KM Final Rain':
 
 
 if option == 'Precipitation_2001-2021_Monthly_Data_525_Grids':
-    period = st.sidebar.slider('Select a time Period',
-    1, 21,(9,18 ),step = 1)
     file_name =  "Precipitation_2001-2021_Monthly_Data_525_Grids.csv"
+    period = st.sidebar.slider('Select a time Period',
+    
+    2001, 2021,(2009,2018 ),step = 1)
+    
+    nperiod = (period[0]-2000,period[1]-2000)
+
+
 
     #st.write('Full path is ',base_path + file_name)
+    
     df = pd.read_csv(file_name)
-    ndf = action_new(df,period[0],period[1])
+    ndf = action_new(df,nperiod[0],nperiod[1])
     
 
 if option == 'Pressure_Surface_2001-2021_Monthly_Data_525_Grids':
-    period = st.sidebar.slider('Select a time Period',
-    1, 21,(9,18 ),step = 1)
     file_name =  "Pressure_Surface_2001-2021_Monthly_Data_525_Grids.csv"
+    period = st.sidebar.slider('Select a time Period',
+    
+    2001, 2021,(2009,2018 ),step = 1)
+    
+    nperiod = (period[0]-2000,period[1]-2000)
+
+
 
     #st.write('Full path is ',base_path + file_name)
+    
     df = pd.read_csv(file_name)
-    ndf = action_new(df,period[0],period[1])
-
-
+    ndf = action_new(df,nperiod[0],nperiod[1])
+    
 
 if option == 'Temperature_2M_2001-2021_Monthly_Data_525_Grids':
-    period = st.sidebar.slider('Select a time Period',
-    1, 21,(9,18 ),step = 1)
     file_name =  "Temperature_2M_2001-2021_Monthly_Data_525_Grids.csv"
+    period = st.sidebar.slider('Select a time Period',
+    
+    2001, 2021,(2009,2018 ),step = 1)
+    
+    nperiod = (period[0]-2000,period[1]-2000)
+
+
 
     #st.write('Full path is ',base_path + file_name)
+    
     df = pd.read_csv(file_name)
-    ndf = action_new(df,period[0],period[1])
-
+    ndf = action_new(df,nperiod[0],nperiod[1])
+    
 
 
 if option == 'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids':
-    period = st.sidebar.slider('Select a time Period',
-    1, 21,(9,18 ),step = 1)
     file_name =  "Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids.csv"
-
-    #st.write('Full path is ',base_path + file_name)
-    df = pd.read_csv(file_name)
-    ndf = action_new(df,period[0],period[1])
-
-if option == 'Temperature_2M_2001-2021_Monthly_Data_525_Grids':
     period = st.sidebar.slider('Select a time Period',
-    1, 21,(9,18 ),step = 1)
-    file_name =  "Temperature_2M_2001-2021_Monthly_Data_525_Grids.csv"
+    
+    2001, 2021,(2009,2018 ),step = 1)
+    
+    nperiod = (period[0]-2000,period[1]-2000)
+
+
 
     #st.write('Full path is ',base_path + file_name)
+    
     df = pd.read_csv(file_name)
-    ndf = action_new(df,period[0],period[1])
+    ndf = action_new(df,nperiod[0],nperiod[1])
+    
+if option == 'Temperature_2M_2001-2021_Monthly_Data_525_Grids':
+    file_name =  "Temperature_2M_2001-2021_Monthly_Data_525_Grids.csv"
+    period = st.sidebar.slider('Select a time Period',
+    
+    2001, 2021,(2009,2018 ),step = 1)
+    
+    nperiod = (period[0]-2000,period[1]-2000)
 
+
+
+    #st.write('Full path is ',base_path + file_name)
+    
+    df = pd.read_csv(file_name)
+    ndf = action_new(df,nperiod[0],nperiod[1])
+    
 
 if option == 'Wind_Direction_10M_2001-2021_Monthly_Data_525_Grids':
-    period = st.sidebar.slider('Select a time Period',
-    1, 21,(9,18 ),step = 1)
     file_name =  "Wind_Direction_10M_2001-2021_Monthly_Data_525_Grids.csv"
+    period = st.sidebar.slider('Select a time Period',
+    
+    2001, 2021,(2009,2018 ),step = 1)
+    
+    nperiod = (period[0]-2000,period[1]-2000)
+
+
 
     #st.write('Full path is ',base_path + file_name)
+    
     df = pd.read_csv(file_name)
-    ndf = action_new(df,period[0],period[1])
-
+    ndf = action_new(df,nperiod[0],nperiod[1])
+    
 if option == 'Wind_Speed_2M_2001-2021_Monthly_Data_525_Grids':
-    period = st.sidebar.slider('Select a time Period',
-    1, 21,(9,18 ),step = 1)
     file_name =  "Wind_Speed_2M_2001-2021_Monthly_Data_525_Grids.csv"
-
-    #st.write('Full path is ',base_path + file_name)
-    df = pd.read_csv(file_name)
-    ndf = action_new(df,period[0],period[1])
-
-if option == 'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids':
     period = st.sidebar.slider('Select a time Period',
-    1, 21,(9,18 ),step = 1)
-    file_name =  "Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids.csv"
+    
+    2001, 2021,(2009,2018 ),step = 1)
+    
+    nperiod = (period[0]-2000,period[1]-2000)
+
+
 
     #st.write('Full path is ',base_path + file_name)
+    
     df = pd.read_csv(file_name)
-    ndf = action_new(df,period[0],period[1])
+    ndf = action_new(df,nperiod[0],nperiod[1])
+    
+if option == 'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids':
+    file_name =  "Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids.csv"
+    period = st.sidebar.slider('Select a time Period',
+    
+    2001, 2021,(2009,2018 ),step = 1)
+    
+    nperiod = (period[0]-2000,period[1]-2000)
 
+
+
+    #st.write('Full path is ',base_path + file_name)
+    
+    df = pd.read_csv(file_name)
+    ndf = action_new(df,nperiod[0],nperiod[1])
+    
 
 
 st.sidebar.write(f'The Time Period is {period[0]}  to {period[1]}')
@@ -292,7 +339,8 @@ if st_option:
         fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Min', radius=RADIUS,
                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}"
-                                ,opacity=OPE ,width = 600, height=600)
+                                ,opacity=OPE ,width = 600, height=600,
+                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
         #fig = px.density_mapbox(ndf, lat="lat", lon="lon",  hover_data=["Min"],
         #                 width = 300, height=200)
         # fig.update_layout(
@@ -310,6 +358,8 @@ if st_option:
         #fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
         #fig.layout.xaxis.fixedrange = False
         #fig.layout.yaxis.fixedrange = False
+        #fig.update_traces(autocolorscale=False, selector=dict(type='densitymapbox'))
+        #fig.update_traces(colorscale=[[0, 'rgb(0,0,0)'], [1, 'rgb(0,0,0)']], selector=dict(type='densitymapbox'))
         st.plotly_chart(fig, use_container_width=False)
         downloadf = pd.DataFrame()
         downloadf = ndf[['lat','lon','Min']]
@@ -327,7 +377,8 @@ if st_option:
         fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Max', radius=RADIUS,
                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}" 
-                                ,opacity=OPE,width = 600, height=600)
+                                ,opacity=OPE,width = 600, height=600,
+                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
 
         st.plotly_chart(fig, use_container_width=False)
         downloadf = pd.DataFrame()
@@ -345,7 +396,9 @@ if st_option:
         fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Mean', radius=RADIUS,
                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}" 
-                                ,opacity=OPE)
+                                ,opacity=OPE
+                                ,
+                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
 
         st.plotly_chart(fig, use_container_width=False)
         downloadf = pd.DataFrame()
@@ -367,7 +420,8 @@ if st_option:
         fig = px.density_mapbox(ndf, lat='lat', lon='lon', z=genre, radius=RADIUS,
                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}" ,
-                                opacity=OPE,width = 600, height=600)
+                                opacity=OPE,width = 600, height=600,
+                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
         
         st.plotly_chart(fig, use_container_width=False)
 
@@ -388,7 +442,8 @@ if st_option:
         fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='IQR', radius=RADIUS,
                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}" 
-                                ,opacity=OPE,width = 600, height=600)
+                                ,opacity=OPE,width = 600, height=600,
+                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
 
 
         st.plotly_chart(fig, use_container_width=False)
@@ -410,7 +465,8 @@ if st_option:
         fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Skewness', radius=RADIUS,
                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}"
-                                ,opacity=OPE,width = 600, height=600 )
+                                ,opacity=OPE,width = 600, height=600 ,
+                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
 
         st.plotly_chart(fig, use_container_width=False)
         downloadf = pd.DataFrame()
@@ -430,7 +486,8 @@ if st_option:
         fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Kurtosis', radius=RADIUS,
                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}" 
-                                ,opacity=OPE,width = 600, height=600)
+                                ,opacity=OPE,width = 600, height=600,
+                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
 
         st.plotly_chart(fig, use_container_width=False)
         downloadf = pd.DataFrame()
@@ -549,10 +606,3 @@ st.markdown(
     f'<img src="data:image/gif;base64,{data_url}" alt="cat gif">',
     unsafe_allow_html=True,
 )
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True) 

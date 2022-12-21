@@ -253,7 +253,7 @@ if option == 'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids':
     
 if option == 'Temperature_2M_2001-2021_Monthly_Data_525_Grids':
     file_name =  "Temperature_2M_2001-2021_Monthly_Data_525_Grids.csv"
-    period = st.sidebar.slider('Select a time Period',
+    period = st.sidebar.slider('Select a time Period.',
     
     2001, 2021,(2009,2018 ),step = 1)
     

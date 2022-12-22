@@ -253,7 +253,7 @@ if option == 'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids':
     
 if option == 'Temperature_2M_2001-2021_Monthly_Data_525_Grids':
     file_name =  "Temperature_2M_2001-2021_Monthly_Data_525_Grids.csv"
-    period = st.sidebar.slider('Select a time Period.',
+    period = st.sidebar.slider('Select a time Period',
     
     2001, 2021,(2009,2018 ),step = 1)
     
@@ -320,6 +320,11 @@ st_option = st.selectbox(
     ('','Min', 'Max', 'Mean','Quartiles','IQR','Skewness','Kurtosis'))
 
 st.write('You selected:', st_option)
+colorFor = st.sidebar.selectbox(
+    'Select the colorscale.',
+    ('aggrnyl', 'agsunset', 'algae', 'amp', 'armyrose', 'balance', 'blackbody', 'bluered', 'blues', 'blugrn', 'bluyl', 'brbg', 'brwnyl', 'bugn', 'bupu', 'burg', 'burgyl', 'cividis', 'curl', 'darkmint', 'deep', 'delta', 'dense', 'earth', 'edge', 'electric', 'emrld', 'fall', 'geyser', 'gnbu', 'gray', 'greens', 'greys', 'haline', 'hot', 'hsv', 'ice', 'icefire', 'inferno', 'jet', 'magenta', 'magma', 'matter', 'mint', 'mrybm', 'mygbm', 'oranges', 'orrd', 'oryel', 'oxy', 'peach', 'phase', 'picnic', 'pinkyl', 'piyg', 'plasma', 'plotly3', 'portland', 'prgn', 'pubu', 'pubugn', 'puor', 'purd', 'purp', 'purples', 'purpor', 'rainbow', 'rdbu', 'rdgy', 'rdpu', 'rdylbu', 'rdylgn', 'redor', 'reds', 'solar', 'spectral', 'speed', 'sunset', 'sunsetdark', 'teal', 'tealgrn', 'tealrose', 'tempo', 'temps', 'thermal', 'tropic', 'turbid', 'turbo', 'twilight', 'viridis', 'ylgn', 'ylgnbu', 'ylorbr', 'ylorrd'))
+
+st.write('You selected:', colorFor)
 
 if st_option:
     if st_option == 'correlations':
@@ -340,7 +345,7 @@ if st_option:
                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}"
                                 ,opacity=OPE ,width = 600, height=600,
-                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
+                                color_continuous_scale=colorFor)#[[0, 'green'], [0.5, colorFor[0]], [1.0, colorFor[1]]])
         #fig = px.density_mapbox(ndf, lat="lat", lon="lon",  hover_data=["Min"],
         #                 width = 300, height=200)
         # fig.update_layout(
@@ -378,7 +383,7 @@ if st_option:
                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}" 
                                 ,opacity=OPE,width = 600, height=600,
-                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
+                                color_continuous_scale=colorFor)
 
         st.plotly_chart(fig, use_container_width=False)
         downloadf = pd.DataFrame()
@@ -398,7 +403,7 @@ if st_option:
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}" 
                                 ,opacity=OPE
                                 ,
-                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
+                                color_continuous_scale=colorFor)
 
         st.plotly_chart(fig, use_container_width=False)
         downloadf = pd.DataFrame()
@@ -421,7 +426,7 @@ if st_option:
                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}" ,
                                 opacity=OPE,width = 600, height=600,
-                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
+                                color_continuous_scale=colorFor)
         
         st.plotly_chart(fig, use_container_width=False)
 
@@ -443,7 +448,7 @@ if st_option:
                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}" 
                                 ,opacity=OPE,width = 600, height=600,
-                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
+                                color_continuous_scale=colorFor)
 
 
         st.plotly_chart(fig, use_container_width=False)
@@ -466,7 +471,7 @@ if st_option:
                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}"
                                 ,opacity=OPE,width = 600, height=600 ,
-                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
+                                color_continuous_scale=colorFor)
 
         st.plotly_chart(fig, use_container_width=False)
         downloadf = pd.DataFrame()
@@ -487,7 +492,7 @@ if st_option:
                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}" 
                                 ,opacity=OPE,width = 600, height=600,
-                                color_continuous_scale=[[0, 'green'], [0.5, 'red'], [1.0, 'rgb(0, 0, 255)']])
+                                color_continuous_scale=colorFor)
 
         st.plotly_chart(fig, use_container_width=False)
         downloadf = pd.DataFrame()

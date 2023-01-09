@@ -65,16 +65,7 @@ def action_new(df,yr1,yr2):
     mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
     for i in range(yr1,yr2):
         for ii in range(12):
-            if i < 10:
-                col_name.append(mon[ii]+"-"+"0"+str(i))
-            else:
-                col_name.append(mon[ii]+"-"+str(i))
-    try:
-        df.columns = col_name
-    except:
-        print("Already have columns Name")
-        df.rename(columns = {'Long':'lon','Lat':'lat'}, inplace = True)
-        df.columns = col_name
+            col_name.append(mon[ii]+"-"+str(i)[2:])
     
     ndf = pd.DataFrame()
     
@@ -98,12 +89,6 @@ def action(df,yr1,yr2):
     for i in range(yr1,yr2):
         for ii in range(12):
             col_name.append(str(i)+"_"+mon[ii])
-    try:
-        df.columns = col_name
-    except:
-        print("Already have columns Name")
-        df.rename(columns = {'Long':'lon','Lat':'lat'}, inplace = True)
-        df.columns = col_name 
     
     ndf = pd.DataFrame()
     
@@ -149,10 +134,10 @@ def convert_df(df):
 
 option = st.sidebar.selectbox(
     'Select a Data-set: ',
-    ('CRU 25KM Final Temp','CRU 25KM Final Rain','Precipitation_2001-2021_Monthly_Data_525_Grids','Pressure_Surface_2001-2021_Monthly_Data_525_Grids',
-    'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids','Temperature_2M_2001-2021_Monthly_Data_525_Grids',
-    'Wind_Direction_10M_2001-2021_Monthly_Data_525_Grids','Wind_Speed_2M_2001-2021_Monthly_Data_525_Grids',
-    'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids'))
+    ('CRU 25KM Final Temp','CRU 25KM Final Rain','Precipitation_NWH_1981-2021','Specific_Humidity(2M)_NWH_1981-2021',
+    'Surface_Pressure_NWH_1981-2021','Temperature(2M)_Maximum_NWH_1981-2021',
+    'Temperature(2M)_Minimum_NWH_1981-2021','Temperature(2M)_NWH_1981-2021',
+    'Wind_Direction(10M)_NWH_1981-2021','Wind_Speed(10M)_NWH_1981-2021'))
 
 st.sidebar.write('You selected:', option)
 
@@ -199,134 +184,133 @@ if option == 'CRU 25KM Final Rain':
 
 
 
-if option == 'Precipitation_2001-2021_Monthly_Data_525_Grids':
-    file_name =  "Precipitation_2001-2021_Monthly_Data_525_Grids.csv"
+if option == 'Precipitation_NWH_1981-2021':
+    file_name =  "Precipitation_NWH_1981-2021.csv"
     period = st.sidebar.slider('Select a time Period',
     
-    2001, 2021,(2009,2018 ),step = 1)
+    1981, 2021,(2009,2018 ),step = 1)
     
-    nperiod = (period[0]-2000,period[1]-2000)
+    #nperiod = (period[0]-2000,period[1]-2000)
 
 
 
     #st.write('Full path is ',base_path + file_name)
     
     df = pd.read_csv(file_name)
-    ndf = action_new(df,nperiod[0],nperiod[1])
+    ndf = action_new(df,period[0],period[1])
     
 
-if option == 'Pressure_Surface_2001-2021_Monthly_Data_525_Grids':
-    file_name =  "Pressure_Surface_2001-2021_Monthly_Data_525_Grids.csv"
+if option == 'Specific_Humidity(2M)_NWH_1981-2021':
+    file_name =  "Specific_Humidity(2M)_NWH_1981-2021.csv"
     period = st.sidebar.slider('Select a time Period',
     
-    2001, 2021,(2009,2018 ),step = 1)
+    1981, 2021,(2009,2018 ),step = 1)
     
-    nperiod = (period[0]-2000,period[1]-2000)
+    #nperiod = (period[0]-2000,period[1]-2000)
 
 
 
     #st.write('Full path is ',base_path + file_name)
     
     df = pd.read_csv(file_name)
-    ndf = action_new(df,nperiod[0],nperiod[1])
+    ndf = action_new(df,period[0],period[1])
     
 
-if option == 'Temperature_2M_2001-2021_Monthly_Data_525_Grids':
-    file_name =  "Temperature_2M_2001-2021_Monthly_Data_525_Grids.csv"
+if option == 'Surface_Pressure_NWH_1981-2021':
+    file_name =  "Surface_Pressure_NWH_1981-2021.csv"
     period = st.sidebar.slider('Select a time Period',
     
-    2001, 2021,(2009,2018 ),step = 1)
+    1981, 2021,(2009,2018 ),step = 1)
     
-    nperiod = (period[0]-2000,period[1]-2000)
+    #nperiod = (period[0]-2000,period[1]-2000)
 
 
 
     #st.write('Full path is ',base_path + file_name)
     
     df = pd.read_csv(file_name)
-    ndf = action_new(df,nperiod[0],nperiod[1])
-    
+    ndf = action_new(df,period[0],period[1])    
 
 
-if option == 'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids':
-    file_name =  "Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids.csv"
+if option == 'Temperature(2M)_Maximum_NWH_1981-2021':
+    file_name =  "Temperature(2M)_Maximum_NWH_1981-2021.csv"
     period = st.sidebar.slider('Select a time Period',
     
-    2001, 2021,(2009,2018 ),step = 1)
+    1981, 2021,(2009,2018 ),step = 1)
     
-    nperiod = (period[0]-2000,period[1]-2000)
+    #nperiod = (period[0]-2000,period[1]-2000)
 
 
 
     #st.write('Full path is ',base_path + file_name)
     
     df = pd.read_csv(file_name)
-    ndf = action_new(df,nperiod[0],nperiod[1])
+    ndf = action_new(df,period[0],period[1])
     
-if option == 'Temperature_2M_2001-2021_Monthly_Data_525_Grids':
-    file_name =  "Temperature_2M_2001-2021_Monthly_Data_525_Grids.csv"
+if option == 'Temperature(2M)_Minimum_NWH_1981-2021':
+    file_name =  "Temperature(2M)_Minimum_NWH_1981-2021.csv"
     period = st.sidebar.slider('Select a time Period',
     
-    2001, 2021,(2009,2018 ),step = 1)
+    1981, 2021,(2009,2018 ),step = 1)
     
-    nperiod = (period[0]-2000,period[1]-2000)
+    #nperiod = (period[0]-2000,period[1]-2000)
 
 
 
     #st.write('Full path is ',base_path + file_name)
     
     df = pd.read_csv(file_name)
-    ndf = action_new(df,nperiod[0],nperiod[1])
+    ndf = action_new(df,period[0],period[1])
     
 
-if option == 'Wind_Direction_10M_2001-2021_Monthly_Data_525_Grids':
-    file_name =  "Wind_Direction_10M_2001-2021_Monthly_Data_525_Grids.csv"
+if option == 'Temperature(2M)_NWH_1981-2021':
+    file_name =  "Temperature(2M)_NWH_1981-2021.csv"
     period = st.sidebar.slider('Select a time Period',
     
-    2001, 2021,(2009,2018 ),step = 1)
+    1981, 2021,(2009,2018 ),step = 1)
     
-    nperiod = (period[0]-2000,period[1]-2000)
+    #nperiod = (period[0]-2000,period[1]-2000)
 
 
 
     #st.write('Full path is ',base_path + file_name)
     
     df = pd.read_csv(file_name)
-    ndf = action_new(df,nperiod[0],nperiod[1])
+    ndf = action_new(df,period[0],period[1])
     
-if option == 'Wind_Speed_2M_2001-2021_Monthly_Data_525_Grids':
-    file_name =  "Wind_Speed_2M_2001-2021_Monthly_Data_525_Grids.csv"
+if option == 'Wind_Direction(10M)_NWH_1981-2021':
+    file_name =  "Wind_Direction(10M)_NWH_1981-2021.csv"
     period = st.sidebar.slider('Select a time Period',
     
-    2001, 2021,(2009,2018 ),step = 1)
+    1981, 2021,(2009,2018 ),step = 1)
     
-    nperiod = (period[0]-2000,period[1]-2000)
+    #nperiod = (period[0]-2000,period[1]-2000)
 
 
 
     #st.write('Full path is ',base_path + file_name)
     
     df = pd.read_csv(file_name)
-    ndf = action_new(df,nperiod[0],nperiod[1])
+    ndf = action_new(df,period[0],period[1])
     
-if option == 'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids':
-    file_name =  "Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids.csv"
+if option == 'Wind_Speed(10M)_NWH_1981-2021':
+    file_name =  "Wind_Speed(10M)_NWH_1981-2021.csv"
     period = st.sidebar.slider('Select a time Period',
     
-    2001, 2021,(2009,2018 ),step = 1)
+    1981, 2021,(2009,2018 ),step = 1)
     
-    nperiod = (period[0]-2000,period[1]-2000)
+    #nperiod = (period[0]-2000,period[1]-2000)
 
 
 
     #st.write('Full path is ',base_path + file_name)
     
     df = pd.read_csv(file_name)
-    ndf = action_new(df,nperiod[0],nperiod[1])
+    ndf = action_new(df,period[0],period[1])
     
 
 
-st.sidebar.write(f'The Time Period is {period[0]}  to {period[1]}')
+st.sidebar.write(f'The Time Period is {str(period[0])[2:]}  to {period[1]}')
 st_option = st.selectbox(
     'Select a statistic to be displayed as Spatial Plot',
     ('','Min', 'Max', 'Mean','Quartiles','IQR','Skewness','Kurtosis'))
@@ -337,6 +321,7 @@ colorFor = st.sidebar.selectbox(
     ('aggrnyl', 'agsunset', 'algae', 'amp', 'armyrose', 'balance', 'blackbody', 'bluered', 'blues', 'blugrn', 'bluyl', 'brbg', 'brwnyl', 'bugn', 'bupu', 'burg', 'burgyl', 'cividis', 'curl', 'darkmint', 'deep', 'delta', 'dense', 'earth', 'edge', 'electric', 'emrld', 'fall', 'geyser', 'gnbu', 'gray', 'greens', 'greys', 'haline', 'hot', 'hsv', 'ice', 'icefire', 'inferno', 'jet', 'magenta', 'magma', 'matter', 'mint', 'mrybm', 'mygbm', 'oranges', 'orrd', 'oryel', 'oxy', 'peach', 'phase', 'picnic', 'pinkyl', 'piyg', 'plasma', 'plotly3', 'portland', 'prgn', 'pubu', 'pubugn', 'puor', 'purd', 'purp', 'purples', 'purpor', 'rainbow', 'rdbu', 'rdgy', 'rdpu', 'rdylbu', 'rdylgn', 'redor', 'reds', 'solar', 'spectral', 'speed', 'sunset', 'sunsetdark', 'teal', 'tealgrn', 'tealrose', 'tempo', 'temps', 'thermal', 'tropic', 'turbid', 'turbo', 'twilight', 'viridis', 'ylgn', 'ylgnbu', 'ylorbr', 'ylorrd'))
 
 st.write('You selected:', colorFor)
+RADIUS = st.sidebar.slider("Radius",1,50,16,1)
 
 if st_option:
     if st_option == 'correlations':

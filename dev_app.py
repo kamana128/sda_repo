@@ -6,6 +6,7 @@ import streamlit as st
 import plotly.express as px
 import os
 import base64
+from sklearn.cluster import KMeans
 # from PIL import Image
 # image = Image.open('Header.png')
 
@@ -313,8 +314,7 @@ if option == 'Wind_Speed(10M)_NWH_1981-2021':
 st.sidebar.write(f'The Time Period is {str(period[0])[2:]}  to {period[1]}')
 st_option = st.selectbox(
     'Select a statistic to be displayed as Spatial Plot',
-    ('','Min', 'Max', 'Mean','Quartiles','IQR','Skewness','Kurtosis'))
-
+    ('','Min', 'Max', 'Mean','Quartiles','IQR','Skewness','Kurtosis','Clustering'))
 st.write('You selected:', st_option)
 colorFor = st.sidebar.selectbox(
     'Select the colorscale.',
@@ -504,26 +504,44 @@ if st_option:
 
 
 
-    if st_option == 'Relative Increment':
-    #     options = st.multiselect(
-    #     'Select a Month (Multiple Selections)',
-    #     ['jan', 'feb', 'mar', 'apr','may','jun','jul','jug','sep','oct','nov','dec']
-    #     )
-    # #   st.write("debug:" )
-    #     if len(options) ==2:
-    #         baseY = str(period)+"_"+options[0]
-    #         compareY = str(period[0])+"_"+options[1]
-    #         nndf = pd.DataFrame()
-    #         nndf['lat'] = df['lat']
-    #         nndf['lon'] = df['lon']
-    #         nndf['Incr'] = (df[compareY] - df[baseY])/df[baseY] 
-    #         fig = px.density_mapbox(nndf, lat='lat', lon='lon', z='Incr', radius=RADIUS,
-    #                                 center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
-    #                                 mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period} - {endperiod}",
-    #                                 opacity=OPE ,width = 600, height=600)
+    if st_option == 'Clustering':
+        clusters = st.slider("Choose the number of clusters",2,10,3,1)
+        cdf =ndf.iloc[:,:2]
+        X = pd.concat([cdf,ndf['Mean']],axis = 1)
+        kmeans = KMeans(n_clusters=clusters)
+        kmeans.fit(X)
 
-    #         st.plotly_chart(fig, use_container_width=False)
-        pass
+        # Predict the cluster labels for each data point
+        y_pred = kmeans.predict(X)
+
+        # Add the predicted cluster labels to the dataframe
+        ndf['cluster'] = y_pred
+        ndf['cluster']=ndf['cluster'] + 1
+
+        fig, ax = plt.subplots()
+        ax.scatter(x=ndf['lon'],y=ndf['lat'],c=ndf['cluster'])
+        
+
+        st.pyplot(fig)
+
+        # fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='cluster', radius=RADIUS,
+        #                         center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
+        #                         mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}" 
+        #                         ,opacity=OPE,width = 600, height=600,
+        #                         color_continuous_scale=colorFor)
+        # # fig = px.scatter_mapbox(ndf, lat="lat", lon="lon",     color="cluster", 
+        #            size_max=15, zoom=10)
+
+        # st.plotly_chart(fig, use_container_width=False)
+        # downloadf = pd.DataFrame()
+        # downloadf = ndf[['lat','lon','Kurtosis']]
+        # csv = convert_df(downloadf)
+        # st.download_button(
+        #             label="Download data as CSV",
+        #             data=csv,
+        #             file_name=f"Stat: {st_option} Between Year {period[0]} - {period[1]}.csv",
+        #             mime='text/csv',
+        #         )
 
 
 

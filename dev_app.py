@@ -61,6 +61,26 @@ def preprocessor(file):
 # df.columns = col_name
 
 
+def corr_action_new(df,yr1,yr2):
+    df.rename(columns = {'Longitude':'lon','Latitude':'lat'}, inplace = True)
+    col_name = ['lat','lon']
+    mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+    for i in range(yr1,yr2):
+        for ii in range(12):
+            # if i < 10:
+            #     col_name.append(mon[ii]+"-"+"0"+str(i))
+            #else:
+            col_name.append(mon[ii]+"-"+str(i)[2:])
+    
+    ndf = pd.DataFrame()
+    
+    #ndf['lat'] = df['lat']
+    #ndf['lon'] = df['lon']
+    return df[col_name]
+
+
+
+
 def action_new(df,yr1,yr2):
     df.rename(columns = {'Longitude':'lon','Latitude':'lat'}, inplace = True)
     col_name = []
@@ -77,6 +97,7 @@ def action_new(df,yr1,yr2):
     ndf['lat'] = df['lat']
     ndf['lon'] = df['lon']
     df = df[col_name]
+    ndf['Std'] = df.iloc[:,2:].std(axis = 1)
     ndf['Min'] = df.iloc[:,2:].min(axis = 1)
     ndf['Max'] = df.iloc[:,2:].max(axis = 1)
     ndf['Mean'] = df.iloc[:,2:].mean(axis = 1)
@@ -100,6 +121,7 @@ def action(df,yr1,yr2):
     ndf['lat'] = df['lat']
     ndf['lon'] = df['lon']
     df = df[col_name]
+    ndf['Std'] = df.iloc[:,2:].std(axis = 1)
     ndf['Min'] = df.iloc[:,2:].min(axis = 1)
     ndf['Max'] = df.iloc[:,2:].max(axis = 1)
     ndf['Mean'] = df.iloc[:,2:].mean(axis = 1)
@@ -393,14 +415,14 @@ if option == 'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids':
 st.sidebar.write(f'The Time Period is {period[0]}  to {period[1]}')
 st_option = st.selectbox(
     'Select a statistic to be displayed as Spatial Plot',
-    ('','Min', 'Max', 'Mean','Quartiles','IQR','Skewness','Kurtosis','Clustering'))
+    ('','Min', 'Max', 'Mean','Quartiles','IQR','Skewness','Kurtosis','Clustering','Correlation','Standard_Deviation'))
 
-st.write('You selected:', st_option)
+#st.write('You selected:', st_option)
 colorFor = st.sidebar.selectbox(
     'Select the colorscale for heatmaps.',
     ('aggrnyl', 'agsunset', 'algae', 'amp', 'armyrose', 'balance', 'blackbody', 'bluered', 'blues', 'blugrn', 'bluyl', 'brbg', 'brwnyl', 'bugn', 'bupu', 'burg', 'burgyl', 'cividis', 'curl', 'darkmint', 'deep', 'delta', 'dense', 'earth', 'edge', 'electric', 'emrld', 'fall', 'geyser', 'gnbu', 'gray', 'greens', 'greys', 'haline', 'hot', 'hsv', 'ice', 'icefire', 'inferno', 'jet', 'magenta', 'magma', 'matter', 'mint', 'mrybm', 'mygbm', 'oranges', 'orrd', 'oryel', 'oxy', 'peach', 'phase', 'picnic', 'pinkyl', 'piyg', 'plasma', 'plotly3', 'portland', 'prgn', 'pubu', 'pubugn', 'puor', 'purd', 'purp', 'purples', 'purpor', 'rainbow', 'rdbu', 'rdgy', 'rdpu', 'rdylbu', 'rdylgn', 'redor', 'reds', 'solar', 'spectral', 'speed', 'sunset', 'sunsetdark', 'teal', 'tealgrn', 'tealrose', 'tempo', 'temps', 'thermal', 'tropic', 'turbid', 'turbo', 'twilight', 'viridis', 'ylgn', 'ylgnbu', 'ylorbr', 'ylorrd'))
 
-st.write('You selected:', colorFor)
+#st.write('You selected:', colorFor)
 
 
 colorFor1 = st.sidebar.selectbox(
@@ -420,16 +442,159 @@ colorFor1 = st.sidebar.selectbox(
 # 'twilight_shifted_r', 'viridis', 'viridis_r', 'winter', 'winter_r']
 
 if st_option:
-    if st_option == 'correlations':
-        file_name =  "NWH-CRU_25km_precipitation_1901-2020-monthly.csv"
-    #st.write('Full path is ',base_path + file_name)
-        raindf = preprocessor(file_name)
-        file_name =  "NWH-CRU_25km_temp-1901-2020-monthly.csv"
-    #st.write('Full path is ',base_path + file_name)
-        tempdf = preprocessor(file_name)
-    
-        st.write("Sorry !!! Under Development ")
 
+    if st_option == 'Standard_Deviation':
+        agree = st.checkbox('<------ Click Here to switch plot')
+        if not agree:
+            shapefile=gpd.read_file("4-17-2018-899072.shp")
+            fig,ax=plt.subplots(figsize=(4.5,4.5))
+            sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['Std'],marker = 's',cmap = colorFor1)
+            plt.axis('off')
+            plt.colorbar(sc)
+            shapefile.plot(ax=ax,color='black')
+            st.pyplot(fig,use_container_width=True)
+        else:
+            fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Std', radius=RADIUS,
+                                    center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
+                                    mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}"
+                                    ,opacity=OPE ,width = 600, height=600,
+                                    color_continuous_scale=colorFor)#[[0, 'green'], [0.5, colorFor[0]], [1.0, colorFor[1]]])
+            #fig = px.density_mapbox(ndf, lat="lat", lon="lon",  hover_data=["Min"],
+            #                 width = 300, height=200)
+            # fig.update_layout(
+            # mapbox_style="white-bg",
+            # mapbox_layers=[
+            #     {
+            #         "below": 'traces',
+            #         "sourcetype": "raster",
+            #         "sourceattribution": "United States Geological Survey",
+            #         "source": [
+            #             "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/79.3105,33.5608,3.92,0/300x200?access_token=pk.eyJ1IjoicmFqYW4zMnMiLCJhIjoiY2w5ODd5enV5MDBtajNzbzZ1a3ZjMnVxcSJ9.c2CycsFb8nHLlMwFE2-7iA"
+            #         ]
+            #     }
+            # ])
+            #fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+            #fig.layout.xaxis.fixedrange = False
+            #fig.layout.yaxis.fixedrange = False
+            #fig.update_traces(autocolorscale=False, selector=dict(type='densitymapbox'))
+            #fig.update_traces(colorscale=[[0, 'rgb(0,0,0)'], [1, 'rgb(0,0,0)']], selector=dict(type='densitymapbox'))
+            st.plotly_chart(fig, use_container_width=False)
+            downloadf = pd.DataFrame()
+            downloadf = ndf[['lat','lon','Min']]
+            csv = convert_df(downloadf)
+            st.download_button(
+                        label="Download data as CSV",
+                        data=csv,
+                        file_name=f"Stat: {st_option} Between Year {period[0]} - {period[1]}.csv",
+                        mime='text/csv',
+                    )
+
+
+
+    if st_option == 'Correlation':
+        # period = st.sidebar.slider('Select a time Period',
+    
+        #             1981, 2021,(2009,2018 ),step = 1)
+    
+
+        ccol1, ccol2 = st.columns(2)
+
+        with ccol1:
+            fst_df = st.selectbox(
+                'Select First Data',
+                ('','Wind_Speed(10M)_NWH_1981-2021',
+                    'Specific_Humidity(2M)_NWH_1981-2021',
+                    'Surface_Pressure_NWH_1981-2021',
+                    'Temperature(2M)_Maximum_NWH_1981-2021',
+                    'Temperature(2M)_Minimum_NWH_1981-2021',
+                    'Temperature(2M)_NWH_1981-2021',
+                    'Wind_Direction(10M)_NWH_1981-2021',
+                    'Precipitation_NWH_1981-2021'))
+
+        with ccol2:
+            second_df = st.selectbox(
+                'Select second Data',
+                ('','Wind_Speed(10M)_NWH_1981-2021',
+                    'Specific_Humidity(2M)_NWH_1981-2021',
+                    'Surface_Pressure_NWH_1981-2021',
+                    'Temperature(2M)_Maximum_NWH_1981-2021',
+                    'Temperature(2M)_Minimum_NWH_1981-2021',
+                    'Temperature(2M)_NWH_1981-2021',
+                    'Wind_Direction(10M)_NWH_1981-2021',
+                    'Precipitation_NWH_1981-2021'))
+        if fst_df and second_df:
+            res = pd.DataFrame()
+
+            
+            fdf = pd.read_csv(fst_df+'.csv')
+            sdf = pd.read_csv(second_df+'.csv')
+
+            # Preprocessing
+            fdf = corr_action_new(fdf,period[0],period[1])
+            sdf = corr_action_new(sdf,period[0],period[1])
+            #st.dataframe(fdf.T)
+            #t.dataframe(sdf.T)
+            res['lat'] = fdf['lat']
+            res['lon'] = fdf['lon']
+
+            res['corr'] = fdf.corrwith(sdf, axis = 1)
+            #st.dataframe(res.T)
+
+            agree = st.checkbox('<------ Click Here to switch plot')
+            if not agree:
+                shapefile=gpd.read_file("4-17-2018-899072.shp")
+                fig,ax=plt.subplots(figsize=(4.5,4.5))
+                sc = plt.scatter(x=res['lon'],y = res['lat'],c = res['corr'],marker = 's',cmap = colorFor1)
+                plt.axis('off')
+                plt.colorbar(sc)
+                shapefile.plot(ax=ax,color='black')
+                st.pyplot(fig,use_container_width=True)
+            else:
+                fig = px.density_mapbox(res, lat='lat', lon='lon', z='corr', radius=RADIUS,
+                                        center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
+                                        mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}"
+                                        ,opacity=OPE ,width = 600, height=600,
+                                        color_continuous_scale=colorFor)#[[0, 'green'], [0.5, colorFor[0]], [1.0, colorFor[1]]])
+                #fig = px.density_mapbox(ndf, lat="lat", lon="lon",  hover_data=["Min"],
+                #                 width = 300, height=200)
+                # fig.update_layout(
+                # mapbox_style="white-bg",
+                # mapbox_layers=[
+                #     {
+                #         "below": 'traces',
+                #         "sourcetype": "raster",
+                #         "sourceattribution": "United States Geological Survey",
+                #         "source": [
+                #             "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/79.3105,33.5608,3.92,0/300x200?access_token=pk.eyJ1IjoicmFqYW4zMnMiLCJhIjoiY2w5ODd5enV5MDBtajNzbzZ1a3ZjMnVxcSJ9.c2CycsFb8nHLlMwFE2-7iA"
+                #         ]
+                #     }
+                # ])
+                #fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+                #fig.layout.xaxis.fixedrange = False
+                #fig.layout.yaxis.fixedrange = False
+                #fig.update_traces(autocolorscale=False, selector=dict(type='densitymapbox'))
+                #fig.update_traces(colorscale=[[0, 'rgb(0,0,0)'], [1, 'rgb(0,0,0)']], selector=dict(type='densitymapbox'))
+                st.plotly_chart(fig, use_container_width=False)
+                downloadf = pd.DataFrame()
+                downloadf = ndf[['lat','lon','Min']]
+                csv = convert_df(downloadf)
+                st.download_button(
+                            label="Download data as CSV",
+                            data=csv,
+                            file_name=f"Stat: {st_option} Between Year {period[0]} - {period[1]}.csv",
+                            mime='text/csv',
+                        )
+
+
+
+            # plotting 
+
+
+         
+
+
+        else:
+            st.write("Select the Datasets.")
 
     if st_option == 'Min':
 

@@ -146,14 +146,14 @@ def convert_df(df):
 
 option = st.sidebar.selectbox(
     'Select a Data-set: ',
-    ('Precipitation_NWH_1981-2021',
+    ('Wind_Speed(10M)_NWH_1981-2021',
     'Specific_Humidity(2M)_NWH_1981-2021',
     'Surface_Pressure_NWH_1981-2021',
     'Temperature(2M)_Maximum_NWH_1981-2021',
     'Temperature(2M)_Minimum_NWH_1981-2021',
     'Temperature(2M)_NWH_1981-2021',
     'Wind_Direction(10M)_NWH_1981-2021',
-    'Wind_Speed(10M)_NWH_1981-2021'
+    'Precipitation_NWH_1981-2021'
 
     ))
 

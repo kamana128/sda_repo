@@ -163,60 +163,118 @@ option = st.sidebar.selectbox(
 st.sidebar.write('You selected:', option)
 
 
-if option == 'Precipitation_NWH_1981-2021':
-    # base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020"
-    # files = os.listdir(base_path)
-    # select_data = []
-    # for i in files:
-    #     if '.csv' in i:
-    #         select_data.append(i)
-    # st_option = st.selectbox(
-    # 'Select Dataset from 50KM',
-    # np.array(select_data))
-    period = st.sidebar.slider('Select a time Period',
-    1901, 2021,(1950,2000 ),step = 1)
+# if option == 'Precipitation_NWH_1981-2021':
+#     # base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020"
+#     # files = os.listdir(base_path)
+#     # select_data = []
+#     # for i in files:
+#     #     if '.csv' in i:
+#     #         select_data.append(i)
+#     # st_option = st.selectbox(
+#     # 'Select Dataset from 50KM',
+#     # np.array(select_data))
+#     period = st.sidebar.slider('Select a time Period',
+#     1901, 2021,(1950,2000 ),step = 1)
     
 
-    file_name =  "NWH-CRU_25km_temp-1901-2020-monthly.csv"
-    #st.write('Full path is ',base_path + file_name)
-    df = preprocessor(file_name)
+#     file_name =  "NWH-CRU_25km_temp-1901-2020-monthly.csv"
+#     #st.write('Full path is ',base_path + file_name)
+#     df = preprocessor(file_name)
     
-    ndf = action(df,period[0],period[1])
+#     ndf = action(df,period[0],period[1])
     
-if option == 'CRU 25KM Final Rain':
-    # base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020"
-    # files = os.listdir(base_path)
-    # select_data = []
-    # for i in files:
-    #     if '.csv' in i:
-    #         select_data.append(i)
-    # st_option = st.selectbox(
-    # 'Select Dataset from 50KM',
-    # np.array(select_data))
-    period = st.sidebar.slider('Select a time Period',
-    1901, 2021,(1950,2000 ),step = 1)
+# if option == 'CRU 25KM Final Rain':
+#     # base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020"
+#     # files = os.listdir(base_path)
+#     # select_data = []
+#     # for i in files:
+#     #     if '.csv' in i:
+#     #         select_data.append(i)
+#     # st_option = st.selectbox(
+#     # 'Select Dataset from 50KM',
+#     # np.array(select_data))
+#     period = st.sidebar.slider('Select a time Period',
+#     1901, 2021,(1950,2000 ),step = 1)
     
 
-    file_name =  "NWH-CRU_25km_precipitation_1901-2020-monthly.csv"
-    #st.write('Full path is ',base_path + file_name)
-    df = preprocessor(file_name)
+#     file_name =  "NWH-CRU_25km_precipitation_1901-2020-monthly.csv"
+#     #st.write('Full path is ',base_path + file_name)
+#     df = preprocessor(file_name)
     
-    ndf = action(df,period[0],period[1])
+#     ndf = action(df,period[0],period[1])
+
+
+
+
+if option == 'Wind_Speed(10M)_NWH_1981-2021':
+    file_name =  "Temperature(2M)_NWH_1981-2021.csv"
+    period = st.sidebar.slider('Select a time Period',
+    1981, 2021,(2009,2018 ),step = 1)    
+    df = pd.read_csv(file_name)
+    ndf = action_new(df,period[0],period[1])
+
+
+
+
+
+if option == 'Wind_Direction(10M)_NWH_1981-2021':
+    file_name =  "Temperature(2M)_NWH_1981-2021.csv"
+    period = st.sidebar.slider('Select a time Period',
+    1981, 2021,(2009,2018 ),step = 1)    
+    df = pd.read_csv(file_name)
+    ndf = action_new(df,period[0],period[1])
+
+
+
+
+
+if option == 'Temperature(2M)_NWH_1981-2021':
+    file_name =  "Temperature(2M)_NWH_1981-2021.csv"
+    period = st.sidebar.slider('Select a time Period',
+    1981, 2021,(2009,2018 ),step = 1)    
+    df = pd.read_csv(file_name)
+    ndf = action_new(df,period[0],period[1])
+
+
+
+
+
+
+
+
+if option == 'Temperature(2M)_Minimum_NWH_1981-2021':
+    file_name =  "Temperature(2M)_Minimum_NWH_1981-2021.csv"
+    period = st.sidebar.slider('Select a time Period',
+    1981, 2021,(2009,2018 ),step = 1)    
+    df = pd.read_csv(file_name)
+    ndf = action_new(df,period[0],period[1])
+
+
+
+
+if option == 'Temperature(2M)_Maximum_NWH_1981-2021':
+    file_name =  "Temperature(2M)_Maximum_NWH_1981-2021.csv"
+    period = st.sidebar.slider('Select a time Period',
+    1981, 2021,(2009,2018 ),step = 1)    
+    df = pd.read_csv(file_name)
+    ndf = action_new(df,period[0],period[1])
+
+
+
+
+if option == 'Surface_Pressure_NWH_1981-2021':
+    file_name =  "Surface_Pressure_NWH_1981-2021.csv"
+    period = st.sidebar.slider('Select a time Period',
+    1981, 2021,(2009,2018 ),step = 1)    
+    df = pd.read_csv(file_name)
+    ndf = action_new(df,period[0],period[1])
 
 
 
 if option == 'Precipitation_NWH_1981-2021':
     file_name =  "Precipitation_NWH_1981-2021.csv"
     period = st.sidebar.slider('Select a time Period',
-    
-    1981, 2021,(2009,2018 ),step = 1)
-    
-    #nperiod = (period[0]-2000,period[1]-2000)
-
-
-
-    #st.write('Full path is ',base_path + file_name)
-    
+    1981, 2021,(2009,2018 ),step = 1)    
     df = pd.read_csv(file_name)
     ndf = action_new(df,period[0],period[1])
     

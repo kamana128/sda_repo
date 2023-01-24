@@ -176,12 +176,12 @@ option = st.sidebar.selectbox(
     'Temperature(2M)_NWH_1981-2021',
     'Wind_Direction(10M)_NWH_1981-2021',
     'Precipitation_NWH_1981-2021',
-     'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
-     'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids',
-     'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
-     'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids',
-     'CRU 25KM Final Rain',
-     'CRU 25KM Final Temp'
+#      'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
+#      'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids',
+#      'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
+#      'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids',
+#      'CRU 25KM Final Rain',
+#      'CRU 25KM Final Temp'
     ))
 
 
@@ -538,12 +538,12 @@ if st_option:
                         'Temperature(2M)_NWH_1981-2021',
                         'Wind_Direction(10M)_NWH_1981-2021',
                         'Precipitation_NWH_1981-2021',
-                         'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
-                         'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids',
-                         'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
-                         'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids',
-                         'CRU 25KM Final Rain',
-                         'CRU 25KM Final Temp'
+#                          'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
+#                          'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids',
+#                          'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
+#                          'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids',
+#                          'CRU 25KM Final Rain',
+#                          'CRU 25KM Final Temp'
                         ))
 
         with ccol2:
@@ -557,12 +557,12 @@ if st_option:
                         'Temperature(2M)_NWH_1981-2021',
                         'Wind_Direction(10M)_NWH_1981-2021',
                         'Precipitation_NWH_1981-2021',
-                         'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
-                         'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids',
-                         'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
-                         'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids',
-                         'CRU 25KM Final Rain',
-                         'CRU 25KM Final Temp'
+#                          'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
+#                          'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids',
+#                          'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
+#                          'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids',
+#                          'CRU 25KM Final Rain',
+#                          'CRU 25KM Final Temp'
                         ))
         if fst_df and second_df:
             res = pd.DataFrame()

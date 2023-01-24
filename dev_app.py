@@ -231,24 +231,26 @@ if option == 'CRU 25KM Final Rain':
     ndf = action(df,period[0],period[1])
 
     
- if option == 'CRU 25KM Final Temp':
-    # base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020"
-    # files = os.listdir(base_path)
-    # select_data = []
-    # for i in files:
-    #     if '.csv' in i:
-    #         select_data.append(i)
-    # st_option = st.selectbox(
-    # 'Select Dataset from 50KM',
-    # np.array(select_data))
+    
+if option == 'CRU 25KM Final Temp':
+
+# base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020"
+# files = os.listdir(base_path)
+# select_data = []
+# for i in files:
+#     if '.csv' in i:
+#         select_data.append(i)
+# st_option = st.selectbox(
+# 'Select Dataset from 50KM',
+# np.array(select_data))
     period = st.sidebar.slider('Select a time Period',
     1901, 2021,(1950,2000 ),step = 1)
-    
+
 
     file_name =  "NWH-CRU_25km_temp-1901-2020-monthly.csv"
     #st.write('Full path is ',base_path + file_name)
     df = preprocessor(file_name)
-    
+
     ndf = action(df,period[0],period[1])
 
 

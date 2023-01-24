@@ -480,7 +480,7 @@ if st_option:
             #fig.update_traces(colorscale=[[0, 'rgb(0,0,0)'], [1, 'rgb(0,0,0)']], selector=dict(type='densitymapbox'))
             st.plotly_chart(fig, use_container_width=False)
             downloadf = pd.DataFrame()
-            downloadf = ndf[['lat','lon','Min']]
+            downloadf = ndf[['lat','lon','Std']]
             csv = convert_df(downloadf)
             st.download_button(
                         label="Download data as CSV",
@@ -537,7 +537,7 @@ if st_option:
             res['lat'] = fdf['lat']
             res['lon'] = fdf['lon']
 
-            res['corr'] = fdf.corrwith(sdf, axis = 1)
+            res['corr'] = fdf.iloc[:,2:].corrwith(sdf.iloc[:,2:], axis = 1)
             #st.dataframe(res.T)
 
             agree = st.checkbox('<------ Click Here to switch plot')
@@ -576,7 +576,7 @@ if st_option:
                 #fig.update_traces(colorscale=[[0, 'rgb(0,0,0)'], [1, 'rgb(0,0,0)']], selector=dict(type='densitymapbox'))
                 st.plotly_chart(fig, use_container_width=False)
                 downloadf = pd.DataFrame()
-                downloadf = ndf[['lat','lon','Min']]
+                downloadf = ndf[['lat','lon','corr']]
                 csv = convert_df(downloadf)
                 st.download_button(
                             label="Download data as CSV",

@@ -175,8 +175,13 @@ option = st.sidebar.selectbox(
     'Temperature(2M)_Minimum_NWH_1981-2021',
     'Temperature(2M)_NWH_1981-2021',
     'Wind_Direction(10M)_NWH_1981-2021',
-    'Precipitation_NWH_1981-2021'
-
+    'Precipitation_NWH_1981-2021',
+     'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
+     'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids',
+     'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
+     'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids',
+     'CRU 25KM Final Rain',
+     'CRU 25KM Final Temp'
     ))
 
 
@@ -205,25 +210,46 @@ st.sidebar.write('You selected:', option)
     
 #     ndf = action(df,period[0],period[1])
     
-# if option == 'CRU 25KM Final Rain':
-#     # base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020"
-#     # files = os.listdir(base_path)
-#     # select_data = []
-#     # for i in files:
-#     #     if '.csv' in i:
-#     #         select_data.append(i)
-#     # st_option = st.selectbox(
-#     # 'Select Dataset from 50KM',
-#     # np.array(select_data))
-#     period = st.sidebar.slider('Select a time Period',
-#     1901, 2021,(1950,2000 ),step = 1)
+if option == 'CRU 25KM Final Rain':
+    # base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020"
+    # files = os.listdir(base_path)
+    # select_data = []
+    # for i in files:
+    #     if '.csv' in i:
+    #         select_data.append(i)
+    # st_option = st.selectbox(
+    # 'Select Dataset from 50KM',
+    # np.array(select_data))
+    period = st.sidebar.slider('Select a time Period',
+    1901, 2021,(1950,2000 ),step = 1)
     
 
-#     file_name =  "NWH-CRU_25km_precipitation_1901-2020-monthly.csv"
-#     #st.write('Full path is ',base_path + file_name)
-#     df = preprocessor(file_name)
+    file_name =  "NWH-CRU_25km_precipitation_1901-2020-monthly.csv"
+    #st.write('Full path is ',base_path + file_name)
+    df = preprocessor(file_name)
     
-#     ndf = action(df,period[0],period[1])
+    ndf = action(df,period[0],period[1])
+
+    
+ if option == 'CRU 25KM Final Temp':
+    # base_path = "./CRU_50km_monthly_1901-2020-20221013T040033Z-001/CRU_50km_monthly_1901-2020"
+    # files = os.listdir(base_path)
+    # select_data = []
+    # for i in files:
+    #     if '.csv' in i:
+    #         select_data.append(i)
+    # st_option = st.selectbox(
+    # 'Select Dataset from 50KM',
+    # np.array(select_data))
+    period = st.sidebar.slider('Select a time Period',
+    1901, 2021,(1950,2000 ),step = 1)
+    
+
+    file_name =  "NWH-CRU_25km_temp-1901-2020-monthly.csv"
+    #st.write('Full path is ',base_path + file_name)
+    df = preprocessor(file_name)
+    
+    ndf = action(df,period[0],period[1])
 
 
 
@@ -503,25 +529,39 @@ if st_option:
             fst_df = st.selectbox(
                 'Select First Data',
                 ('','Wind_Speed(10M)_NWH_1981-2021',
-                    'Specific_Humidity(2M)_NWH_1981-2021',
-                    'Surface_Pressure_NWH_1981-2021',
-                    'Temperature(2M)_Maximum_NWH_1981-2021',
-                    'Temperature(2M)_Minimum_NWH_1981-2021',
-                    'Temperature(2M)_NWH_1981-2021',
-                    'Wind_Direction(10M)_NWH_1981-2021',
-                    'Precipitation_NWH_1981-2021'))
+                        'Specific_Humidity(2M)_NWH_1981-2021',
+                        'Surface_Pressure_NWH_1981-2021',
+                        'Temperature(2M)_Maximum_NWH_1981-2021',
+                        'Temperature(2M)_Minimum_NWH_1981-2021',
+                        'Temperature(2M)_NWH_1981-2021',
+                        'Wind_Direction(10M)_NWH_1981-2021',
+                        'Precipitation_NWH_1981-2021',
+                         'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
+                         'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids',
+                         'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
+                         'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids',
+                         'CRU 25KM Final Rain',
+                         'CRU 25KM Final Temp'
+                        ))
 
         with ccol2:
             second_df = st.selectbox(
                 'Select second Data',
                 ('','Wind_Speed(10M)_NWH_1981-2021',
-                    'Specific_Humidity(2M)_NWH_1981-2021',
-                    'Surface_Pressure_NWH_1981-2021',
-                    'Temperature(2M)_Maximum_NWH_1981-2021',
-                    'Temperature(2M)_Minimum_NWH_1981-2021',
-                    'Temperature(2M)_NWH_1981-2021',
-                    'Wind_Direction(10M)_NWH_1981-2021',
-                    'Precipitation_NWH_1981-2021'))
+                        'Specific_Humidity(2M)_NWH_1981-2021',
+                        'Surface_Pressure_NWH_1981-2021',
+                        'Temperature(2M)_Maximum_NWH_1981-2021',
+                        'Temperature(2M)_Minimum_NWH_1981-2021',
+                        'Temperature(2M)_NWH_1981-2021',
+                        'Wind_Direction(10M)_NWH_1981-2021',
+                        'Precipitation_NWH_1981-2021',
+                         'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
+                         'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids',
+                         'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
+                         'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids',
+                         'CRU 25KM Final Rain',
+                         'CRU 25KM Final Temp'
+                        ))
         if fst_df and second_df:
             res = pd.DataFrame()
 

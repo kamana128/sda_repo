@@ -540,8 +540,8 @@ if st_option:
 #                          'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids',
 #                          'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
 #                          'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids',
-#                          'CRU 25KM Final Rain',
-#                          'CRU 25KM Final Temp'
+                         'CRU_precipitation_25k (1)',
+                         'CRU_temp_25k (1).csv'
                         ))
 
         with ccol2:
@@ -559,8 +559,8 @@ if st_option:
 #                          'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids',
 #                          'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
 #                          'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids',
-#                          'CRU 25KM Final Rain',
-#                          'CRU 25KM Final Temp'
+                         'CRU_precipitation_25k (1)',
+                         'CRU_temp_25k (1)'
                         ))
         if fst_df and second_df:
             res = pd.DataFrame()

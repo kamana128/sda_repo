@@ -630,7 +630,9 @@ if st_option:
 
 
         except Exception as e:
-            raise "Please select appropiate range"# plotting 
+            st.warning('Please select appropiate range', icon="⚠️")
+            #raise "Please select appropiate range"# plotting 
+            
 
 
          

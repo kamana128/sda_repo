@@ -562,72 +562,75 @@ if st_option:
                          'CRU_precipitation_25k (1)',
                          'CRU_temp_25k (1)'
                         ))
-        if fst_df and second_df:
-            res = pd.DataFrame()
-
-            
-            fdf = pd.read_csv(fst_df+'.csv')
-            sdf = pd.read_csv(second_df+'.csv')
-
-            # Preprocessing
-            fdf = corr_action_new(fdf,period[0],period[1])
-            sdf = corr_action_new(sdf,period[0],period[1])
-            #st.dataframe(fdf.T)
-            #t.dataframe(sdf.T)
-            res['lat'] = fdf['lat']
-            res['lon'] = fdf['lon']
-
-            res['corr'] = fdf.iloc[:,2:].corrwith(sdf.iloc[:,2:], axis = 1)
-            #st.dataframe(res.T)
-
-            agree = st.checkbox('<------ Click Here to switch plot')
-            if not agree:
-                shapefile=gpd.read_file("4-17-2018-899072.shp")
-                fig,ax=plt.subplots(figsize=(4.5,4.5))
-                sc = plt.scatter(x=res['lon'],y = res['lat'],c = res['corr'],marker = 's',cmap = colorFor1)
-                plt.axis('off')
-                plt.colorbar(sc)
-                shapefile.plot(ax=ax,color='black')
-                st.pyplot(fig,use_container_width=True)
-            else:
-                fig = px.density_mapbox(res, lat='lat', lon='lon', z='corr', radius=RADIUS,
-                                        center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
-                                        mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}"
-                                        ,opacity=OPE ,width = 600, height=600,
-                                        color_continuous_scale=colorFor)#[[0, 'green'], [0.5, colorFor[0]], [1.0, colorFor[1]]])
-                #fig = px.density_mapbox(ndf, lat="lat", lon="lon",  hover_data=["Min"],
-                #                 width = 300, height=200)
-                # fig.update_layout(
-                # mapbox_style="white-bg",
-                # mapbox_layers=[
-                #     {
-                #         "below": 'traces',
-                #         "sourcetype": "raster",
-                #         "sourceattribution": "United States Geological Survey",
-                #         "source": [
-                #             "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/79.3105,33.5608,3.92,0/300x200?access_token=pk.eyJ1IjoicmFqYW4zMnMiLCJhIjoiY2w5ODd5enV5MDBtajNzbzZ1a3ZjMnVxcSJ9.c2CycsFb8nHLlMwFE2-7iA"
-                #         ]
-                #     }
-                # ])
-                #fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-                #fig.layout.xaxis.fixedrange = False
-                #fig.layout.yaxis.fixedrange = False
-                #fig.update_traces(autocolorscale=False, selector=dict(type='densitymapbox'))
-                #fig.update_traces(colorscale=[[0, 'rgb(0,0,0)'], [1, 'rgb(0,0,0)']], selector=dict(type='densitymapbox'))
-                st.plotly_chart(fig, use_container_width=False)
-                downloadf = pd.DataFrame()
-                downloadf = ndf[['lat','lon','corr']]
-                csv = convert_df(downloadf)
-                st.download_button(
-                            label="Download data as CSV",
-                            data=csv,
-                            file_name=f"Stat: {st_option} Between Year {period[0]} - {period[1]}.csv",
-                            mime='text/csv',
-                        )
+        try:
+            if fst_df and second_df:
+                res = pd.DataFrame()
 
 
+                fdf = pd.read_csv(fst_df+'.csv')
+                sdf = pd.read_csv(second_df+'.csv')
 
-            # plotting 
+                # Preprocessing
+                fdf = corr_action_new(fdf,period[0],period[1])
+                sdf = corr_action_new(sdf,period[0],period[1])
+                #st.dataframe(fdf.T)
+                #t.dataframe(sdf.T)
+                res['lat'] = fdf['lat']
+                res['lon'] = fdf['lon']
+
+                res['corr'] = fdf.iloc[:,2:].corrwith(sdf.iloc[:,2:], axis = 1)
+                #st.dataframe(res.T)
+
+                agree = st.checkbox('<------ Click Here to switch plot')
+                if not agree:
+                    shapefile=gpd.read_file("4-17-2018-899072.shp")
+                    fig,ax=plt.subplots(figsize=(4.5,4.5))
+                    sc = plt.scatter(x=res['lon'],y = res['lat'],c = res['corr'],marker = 's',cmap = colorFor1)
+                    plt.axis('off')
+                    plt.colorbar(sc)
+                    shapefile.plot(ax=ax,color='black')
+                    st.pyplot(fig,use_container_width=True)
+                else:
+                    fig = px.density_mapbox(res, lat='lat', lon='lon', z='corr', radius=RADIUS,
+                                            center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
+                                            mapbox_style="stamen-toner",title = f"Stat: {st_option} Between Year {period[0]} - {period[1]}"
+                                            ,opacity=OPE ,width = 600, height=600,
+                                            color_continuous_scale=colorFor)#[[0, 'green'], [0.5, colorFor[0]], [1.0, colorFor[1]]])
+                    #fig = px.density_mapbox(ndf, lat="lat", lon="lon",  hover_data=["Min"],
+                    #                 width = 300, height=200)
+                    # fig.update_layout(
+                    # mapbox_style="white-bg",
+                    # mapbox_layers=[
+                    #     {
+                    #         "below": 'traces',
+                    #         "sourcetype": "raster",
+                    #         "sourceattribution": "United States Geological Survey",
+                    #         "source": [
+                    #             "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/79.3105,33.5608,3.92,0/300x200?access_token=pk.eyJ1IjoicmFqYW4zMnMiLCJhIjoiY2w5ODd5enV5MDBtajNzbzZ1a3ZjMnVxcSJ9.c2CycsFb8nHLlMwFE2-7iA"
+                    #         ]
+                    #     }
+                    # ])
+                    #fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+                    #fig.layout.xaxis.fixedrange = False
+                    #fig.layout.yaxis.fixedrange = False
+                    #fig.update_traces(autocolorscale=False, selector=dict(type='densitymapbox'))
+                    #fig.update_traces(colorscale=[[0, 'rgb(0,0,0)'], [1, 'rgb(0,0,0)']], selector=dict(type='densitymapbox'))
+                    st.plotly_chart(fig, use_container_width=False)
+                    downloadf = pd.DataFrame()
+                    downloadf = ndf[['lat','lon','corr']]
+                    csv = convert_df(downloadf)
+                    st.download_button(
+                                label="Download data as CSV",
+                                data=csv,
+                                file_name=f"Stat: {st_option} Between Year {period[0]} - {period[1]}.csv",
+                                mime='text/csv',
+                            )
+                    
+
+
+
+        except Exception as e:
+            raise "Please select appropiate range"# plotting 
 
 
          

@@ -224,11 +224,10 @@ if option == 'CRU 25KM Final Rain':
     1901, 2021,(2000,2005 ),step = 1)
     
 
-    file_name =  "NWH-CRU_25km_precipitation_1901-2020-monthly.csv"
+    file_name =  "CRU_precipitation_25k.csv"
     #st.write('Full path is ',base_path + file_name)
-    df = preprocessor(file_name)
-    
-    ndf = action(df,period[0],period[1])
+    df = pd.read_csv(file_name)
+    ndf = action_new(df,period[0],period[1])
 
     
     
@@ -247,11 +246,10 @@ if option == 'CRU 25KM Final Temp':
     1901, 2021,(2000,2005 ),step = 1)
 
 
-    file_name =  "NWH-CRU_25km_temp-1901-2020-monthly.csv"
+    file_name =  "CRU_temp_25k.csv"
     #st.write('Full path is ',base_path + file_name)
-    df = preprocessor(file_name)
-
-    ndf = action(df,period[0],period[1])
+    df = pd.read_csv(file_name)
+    ndf = action_new(df,period[0],period[1])
 
 
 

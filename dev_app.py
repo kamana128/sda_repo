@@ -630,7 +630,7 @@ if st_option:
 
 
         except Exception as e:
-            st.warning('Please select appropiate range', icon="⚠️")
+            st.warning('Please select appropiate range i.e both data should have same range.', icon="⚠️")
             #raise "Please select appropiate range"# plotting 
             
 

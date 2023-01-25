@@ -180,8 +180,8 @@ option = st.sidebar.selectbox(
 #      'Relative_Humidity_2M_2001-2021_Monthly_Data_525_Grids',
 #      'Temperature_2M_2001-2021_Monthly_Data_525_Grids',
 #      'Wind_Speed_10M_2001-2021_Monthly_Data_525_Grids',
-#      'CRU 25KM Final Rain',
-#      'CRU 25KM Final Temp'
+     'CRU 25KM Final Rain',
+     'CRU 25KM Final Temp'
     ))
 
 

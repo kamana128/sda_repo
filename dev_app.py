@@ -221,7 +221,7 @@ if option == 'CRU 25KM Final Rain':
     # 'Select Dataset from 50KM',
     # np.array(select_data))
     period = st.sidebar.slider('Select a time Period',
-    1901, 2021,(1950,2000 ),step = 1)
+    1901, 2021,(2000,2005 ),step = 1)
     
 
     file_name =  "NWH-CRU_25km_precipitation_1901-2020-monthly.csv"
@@ -244,7 +244,7 @@ if option == 'CRU 25KM Final Temp':
 # 'Select Dataset from 50KM',
 # np.array(select_data))
     period = st.sidebar.slider('Select a time Period',
-    1901, 2021,(1950,2000 ),step = 1)
+    1901, 2021,(2000,2005 ),step = 1)
 
 
     file_name =  "NWH-CRU_25km_temp-1901-2020-monthly.csv"

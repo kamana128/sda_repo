@@ -734,7 +734,7 @@ if st_option:
             
         
         agree = st.checkbox('<------ Click Here to switch plot')
-#         if not agree:
+        if not agree:
 #             shapefile=gpd.read_file("4-17-2018-899072.shp")
 #             fig,ax=plt.subplots(figsize=(4.5,4.5))
 #             sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['Mean'],marker = 's',cmap = colorFor1)
@@ -774,7 +774,7 @@ if st_option:
 
 
         agree = st.checkbox('<------ Click Here to switch plot')
-#         if not agree:
+        if not agree:
 #             shapefile=gpd.read_file("4-17-2018-899072.shp")
 #             fig,ax=plt.subplots(figsize=(4.5,4.5))
 #             sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf[genre],marker = 's',cmap = colorFor1)
@@ -810,7 +810,7 @@ if st_option:
 
 
         agree = st.checkbox('<------ Click Here to switch plot')
-#         if not agree:
+        if not agree:
 #             shapefile=gpd.read_file("4-17-2018-899072.shp")
 #             fig,ax=plt.subplots(figsize=(4.5,4.5))
 #             sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['IQR'],marker = 's',cmap = colorFor1)

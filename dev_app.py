@@ -255,7 +255,7 @@ if option == 'CRU 25KM Final Temp':
 
 
 if option == 'Wind_Speed(10M)_NWH_1981-2021':
-    file_name =  "Temperature(2M)_NWH_1981-2021.csv"
+    file_name =  "Wind_Speed(10M)_NWH_1981-2021.csv"
     period = st.sidebar.slider('Select a time Period',
     1981, 2021,(2009,2018 ),step = 1)    
     df = pd.read_csv(file_name)

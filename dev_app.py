@@ -444,7 +444,7 @@ st.sidebar.write(f'The Time Period is {period[0]}  to {period[1]}')
 st_option = st.selectbox(
     'Select a statistic to be displayed as Spatial Plot',
     ('','Min', 'Max', 'Mean','Quartiles','IQR','Skewness','Kurtosis',
-    # 'Clustering','Correlation','Standard_Deviation'
+    'Clustering','Correlation','Standard_Deviation'
     ))
 
 #st.write('You selected:', st_option)
@@ -650,15 +650,15 @@ if st_option:
         #st.dataframe(ndf)
         agree = st.checkbox('<------ Click Here to switch plot')
         if not agree:
-            st.title("Under Development")
+            #st.title("Under Development")
             
-#             shapefile=gpd.read_file("4-17-2018-899072.shp")
-#             fig,ax=plt.subplots(figsize=(4.5,4.5))
-#             sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['Min'],marker = 's',cmap = colorFor1)
-#             plt.axis('off')
-#             plt.colorbar(sc)
-#             shapefile.plot(ax=ax,color='black')
-#             st.pyplot(fig,use_container_width=True)
+            shapefile=gpd.read_file("4-17-2018-899072.shp")
+            fig,ax=plt.subplots(figsize=(4.5,4.5))
+            sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['Min'],marker = 's',cmap = colorFor1)
+            plt.axis('off')
+            plt.colorbar(sc)
+            shapefile.plot(ax=ax,color='black')
+            st.pyplot(fig,use_container_width=True)
               
         else:
             fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='Min', radius=RADIUS,
@@ -702,14 +702,14 @@ if st_option:
 
         agree = st.checkbox('<------ Click Here to switch plot')
         if not agree:
-#             shapefile=gpd.read_file("4-17-2018-899072.shp")
-#             fig,ax=plt.subplots(figsize=(4.5,4.5))
-#             sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['Max'],marker = 's',cmap = colorFor1)
-#             plt.axis('off')
-#             plt.colorbar(sc)
-#             shapefile.plot(ax=ax,color='black')
-#             st.pyplot(fig,use_container_width=True)
-            st.title("Under Development")  
+            shapefile=gpd.read_file("4-17-2018-899072.shp")
+            fig,ax=plt.subplots(figsize=(4.5,4.5))
+            sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['Max'],marker = 's',cmap = colorFor1)
+            plt.axis('off')
+            plt.colorbar(sc)
+            shapefile.plot(ax=ax,color='black')
+            st.pyplot(fig,use_container_width=True)
+            #st.title("Under Development")  
         else:
 
 
@@ -735,14 +735,14 @@ if st_option:
         
         agree = st.checkbox('<------ Click Here to switch plot')
         if not agree:
-#             shapefile=gpd.read_file("4-17-2018-899072.shp")
-#             fig,ax=plt.subplots(figsize=(4.5,4.5))
-#             sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['Mean'],marker = 's',cmap = colorFor1)
-#             plt.axis('off')
-#             plt.colorbar(sc)
-#             shapefile.plot(ax=ax,color='black')
-#             st.pyplot(fig,use_container_width=True)
-            st.title("Under Development")  
+            shapefile=gpd.read_file("4-17-2018-899072.shp")
+            fig,ax=plt.subplots(figsize=(4.5,4.5))
+            sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['Mean'],marker = 's',cmap = colorFor1)
+            plt.axis('off')
+            plt.colorbar(sc)
+            shapefile.plot(ax=ax,color='black')
+            st.pyplot(fig,use_container_width=True)
+#             st.title("Under Development")  
         else:
         
         
@@ -775,14 +775,14 @@ if st_option:
 
         agree = st.checkbox('<------ Click Here to switch plot')
         if not agree:
-#             shapefile=gpd.read_file("4-17-2018-899072.shp")
-#             fig,ax=plt.subplots(figsize=(4.5,4.5))
-#             sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf[genre],marker = 's',cmap = colorFor1)
-#             plt.axis('off')
-#             plt.colorbar(sc)
-#             shapefile.plot(ax=ax,color='black')
-#             st.pyplot(fig,use_container_width=True)
-            st.title("Under Development")  
+            shapefile=gpd.read_file("4-17-2018-899072.shp")
+            fig,ax=plt.subplots(figsize=(4.5,4.5))
+            sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf[genre],marker = 's',cmap = colorFor1)
+            plt.axis('off')
+            plt.colorbar(sc)
+            shapefile.plot(ax=ax,color='black')
+            st.pyplot(fig,use_container_width=True)
+#             st.title("Under Development")  
         else:
             
             fig = px.density_mapbox(ndf, lat='lat', lon='lon', z=genre, radius=RADIUS,
@@ -811,14 +811,14 @@ if st_option:
 
         agree = st.checkbox('<------ Click Here to switch plot')
         if not agree:
-#             shapefile=gpd.read_file("4-17-2018-899072.shp")
-#             fig,ax=plt.subplots(figsize=(4.5,4.5))
-#             sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['IQR'],marker = 's',cmap = colorFor1)
-#             plt.axis('off')
-#             plt.colorbar(sc)
-#             shapefile.plot(ax=ax,color='black')
-#             st.pyplot(fig,use_container_width=True)
-            st.title("Under Development")  
+            shapefile=gpd.read_file("4-17-2018-899072.shp")
+            fig,ax=plt.subplots(figsize=(4.5,4.5))
+            sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['IQR'],marker = 's',cmap = colorFor1)
+            plt.axis('off')
+            plt.colorbar(sc)
+            shapefile.plot(ax=ax,color='black')
+            st.pyplot(fig,use_container_width=True)
+#             st.title("Under Development")  
         else:
             
             fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='IQR', radius=RADIUS,
@@ -847,14 +847,14 @@ if st_option:
         
         agree = st.checkbox('<------ Click Here to switch plot')
         if not agree:
-#             shapefile=gpd.read_file("4-17-2018-899072.shp")
-#             fig,ax=plt.subplots(figsize=(4.5,4.5))
-#             sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['Skewness'],marker = 's',cmap = colorFor1)
-#             plt.axis('off')
-#             plt.colorbar(sc)
-#             shapefile.plot(ax=ax,color='black')
-#             st.pyplot(fig,use_container_width=True)
-            st.title("Under Development")  
+            shapefile=gpd.read_file("4-17-2018-899072.shp")
+            fig,ax=plt.subplots(figsize=(4.5,4.5))
+            sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['Skewness'],marker = 's',cmap = colorFor1)
+            plt.axis('off')
+            plt.colorbar(sc)
+            shapefile.plot(ax=ax,color='black')
+            st.pyplot(fig,use_container_width=True)
+#             st.title("Under Development")  
         else:
             
             
@@ -881,14 +881,14 @@ if st_option:
 
         agree = st.checkbox('<------ Click Here to switch plot')
         if not agree:
-#             shapefile=gpd.read_file("4-17-2018-899072.shp")
-#             fig,ax=plt.subplots(figsize=(4.5,4.5))
-#             sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['Kurtosis'],marker = 's',cmap = colorFor1)
-#             plt.axis('off')
-#             plt.colorbar(sc)
-#             shapefile.plot(ax=ax,color='black')
-#             st.pyplot(fig,use_container_width=True)
-            st.title("Under Development")  
+            shapefile=gpd.read_file("4-17-2018-899072.shp")
+            fig,ax=plt.subplots(figsize=(4.5,4.5))
+            sc = plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['Kurtosis'],marker = 's',cmap = colorFor1)
+            plt.axis('off')
+            plt.colorbar(sc)
+            shapefile.plot(ax=ax,color='black')
+            st.pyplot(fig,use_container_width=True)
+#             st.title("Under Development")  
         else:
             
 
@@ -929,14 +929,14 @@ if st_option:
 
         agree = st.checkbox('<------ Click Here to switch plot')
         if not agree:
-#             shapefile=gpd.read_file("4-17-2018-899072.shp")
-#             fig,ax=plt.subplots(figsize=(2.5,2.5))
-#             plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['cluster'],marker = '.')
-#             plt.axis('off')
-#             plt.title(f"Fig: Using kMeans with {clusters} clusters ")
-#             shapefile.plot(ax=ax,color='black')
-#             st.pyplot(fig,use_container_width=True)
-            st.title("Under Development")  
+            shapefile=gpd.read_file("4-17-2018-899072.shp")
+            fig,ax=plt.subplots(figsize=(2.5,2.5))
+            plt.scatter(x=ndf['lon'],y = ndf['lat'],c = ndf['cluster'],marker = '.')
+            plt.axis('off')
+            plt.title(f"Fig: Using kMeans with {clusters} clusters ")
+            shapefile.plot(ax=ax,color='black')
+            st.pyplot(fig,use_container_width=True)
+#             st.title("Under Development")  
         else:
             fig = px.density_mapbox(ndf, lat='lat', lon='lon', z='cluster', radius=RADIUS,
                                             center=dict(lat=33.25, lon=77.25), zoom=ZOOM,
